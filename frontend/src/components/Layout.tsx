@@ -1,12 +1,11 @@
 // src/components/Layout.tsx
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
-
-// Placeholder data adhering to the defined types
-const profilePlaceholder = { name: 'Ian Surii', branch: 'Downtown Central', avatarUrl: '' };
-const notificationsPlaceholder = [{ id: 1, message: 'New leads arrived.' }, { id: 2, message: 'Monthly report ready.' }];
+import BannerMessage from './BannerMessage';
+import { fetchBanner } from '../api/sessionApi';
+import { IBanner } from '../types/User';
 
 // Define the props for Layout (children are React nodes)
 interface LayoutProps {
@@ -15,21 +14,46 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [banner, setBanner] = useState<IBanner | null>(null);
+    const [bannerLoading, setBannerLoading] = useState(true);
+    const [activeModule, setActiveModule] = useState<'lead' | 'marketing' | 'campaigns' | 'studio'>('lead');
+
     const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
+    useEffect(() => {
+        const loadBanner = async () => {
+            try {
+                const bannerData = await fetchBanner();
+                setBanner(bannerData);
+            } catch (error) {
+                console.error('Failed to load banner:', error);
+            } finally {
+                setBannerLoading(false);
+            }
+        };
+
+        loadBanner();
+    }, []);
+
+    const showBanner = !bannerLoading && banner && banner.active;
+    const bannerHeight = showBanner ? 36 : 0;
+
     return (
-        <div className="flex h-screen bg-gray-50">
+        <div className="flex h-screen bg-gray-50" style={{ paddingTop: `${bannerHeight}px` }}>
+            {/* Banner appears at the very top - fixed position, full width */}
+            {showBanner && <BannerMessage banner={banner} />}
             
-            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+            {/* Navbar - fixed position, full width, above sidebar */}
+            <div className="fixed top-0 left-0 right-0 z-50" style={{ marginTop: `${bannerHeight}px` }}>
+                <Navbar toggleSidebar={toggleSidebar} activeModule={activeModule} setActiveModule={setActiveModule} />
+            </div>
             
-            <div className="flex flex-col flex-1 overflow-y-auto md:ml-64">
-                
-                <Navbar 
-                    toggleSidebar={toggleSidebar} 
-                    profileData={profilePlaceholder} 
-                    notifications={notificationsPlaceholder} 
-                />
-                
+            <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} activeModule={activeModule} />
+            
+            <div 
+                className="flex flex-col flex-1 overflow-y-auto md:ml-64"
+                style={{ paddingTop: '64px' }}
+            >
                 <main className="flex-1 p-4 sm:p-6">
                     {children}
                 </main>

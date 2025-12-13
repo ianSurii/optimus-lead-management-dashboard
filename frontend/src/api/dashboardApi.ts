@@ -2,7 +2,8 @@
 
 import { IDashboardData } from '../types/Dashboard';
 
-const API_URL = process.env.REACT_APP_API_URL;
+// const API_URL = process.env.REACT_APP_API_URL;
+const API_URL = "http://localhost:3000";
 const API_VERSION = '/api/v1';
 
 // Define the type for filters, allowing string, number, or undefined values

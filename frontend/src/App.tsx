@@ -33,8 +33,7 @@ import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 
 
-// Placeholder pages (tsx is optional here, but good practice)
-const TransactionsPage: React.FC = () => <div className="text-xl p-6">Transactions List View</div>;
+// Placeholder pages
 const AgentsPage: React.FC = () => <div className="text-xl p-6">Agent Performance View</div>;
 const SettingsPage: React.FC = () => <div className="text-xl p-6">Application Settings</div>;
 
@@ -47,7 +46,7 @@ const App: React.FC = () => {
                     <Route path="/" element={<Dashboard />} />
                     
                     {/* Menu Routes */}
-                    {/* <Route path="/transactions" element={<TransactionsPage />} /> */}
+                    <Route path="/transactions" element={<NotFound />} />
                     <Route path="/agents" element={<AgentsPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
 

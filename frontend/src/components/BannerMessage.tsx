@@ -1,18 +1,23 @@
-// src/components/BannerMessage.tsx
-
 import React from 'react';
+import { IBanner } from '../types/User';
 
 // Define the component's props interface
 interface BannerMessageProps {
-    message?: string;
+    banner: IBanner;
 }
 
 // Use React.FC (Function Component) and pass the Props interface
-const BannerMessage: React.FC<BannerMessageProps> = ({ message }) => {
+const BannerMessage: React.FC<BannerMessageProps> = ({ banner }) => {
     return (
-        <div className="p-4 mb-6 text-indigo-900 bg-indigo-100 border-l-4 border-indigo-500 rounded-lg" role="alert">
-            <p className="font-bold">Welcome Back, Ian Surii!</p>
-            <p className="text-sm">{message || "Review today's performance and address pending leads."}</p>
+        <div 
+            className="fixed top-0 left-0 right-0 z-50 py-2 px-4 text-white text-center text-sm flex items-center justify-center"
+            style={{ backgroundColor: '#242424' }}
+            role="alert"
+        >
+            <div 
+            className="banner-content"
+            dangerouslySetInnerHTML={{ __html: banner.text }}
+            />
         </div>
     );
 };

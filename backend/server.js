@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const config = require('./config');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const sessionRoutes = require('./routes/userRoutes');
 const app = express();
 const PORT = config.port || 3000;
 
@@ -22,6 +23,8 @@ app.get('/', (req, res) => {
 app.get(`${BASE_URL}/`, (req, res) => {
     res.send({ status: 'Dashboard API is running successfully!!', version: '' + config.apiVersion });
 });
+app.use(BASE_URL, sessionRoutes);
+
 
 
 
