@@ -26,7 +26,7 @@
 // export default App;
 // src/App.tsx
 
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
@@ -42,12 +42,14 @@ const StudiosPage: React.FC = () => <div className="text-xl p-6">Studio Page</di
 
 
 const App: React.FC = () => {
+    const [searchQuery, setSearchQuery] = useState<string>('');
+
     return (
         <Router>
-            <Layout>
+            <Layout searchQuery={searchQuery} onSearchChange={setSearchQuery}>
                 <Routes>
                     {/* Main Dashboard Route */}
-                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/" element={<Dashboard searchQuery={searchQuery} />} />
                     
                     {/* Menu Routes */}
                     <Route path="/transactions" element={<NotFound />} />

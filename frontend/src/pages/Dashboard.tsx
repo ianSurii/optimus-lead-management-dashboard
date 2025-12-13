@@ -15,8 +15,13 @@ import Footer from '../components/Footer';
 import { fetchUserProfile } from '../api/sessionApi';
 import { IUserProfile } from '../types/User';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+    searchQuery?: string;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ searchQuery = '' }) => {
     const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
+    const [activeModule, setActiveModule] = useState<'lead' | 'marketing' | 'campaigns' | 'studio'>('lead');
     const [appliedFilters, setAppliedFilters] = useState<FilterState>({
         date: new Date().toISOString().split('T')[0],
         branchId: '',
@@ -53,8 +58,78 @@ const Dashboard: React.FC = () => {
 
     const { data, isLoading, error, refreshData } = useDashboardData(filters);
 
+    // Filter data based on search query - must be called before any conditional returns
+    const filteredData = useMemo(() => {
+        if (!data) {
+            return null;
+        }
+
+        const { kpi_metrics, recommendations, branch_agent_rankings, country_rankings, top_performing_agents, agent_performance_released } = data;
+
+        if (!searchQuery.trim()) {
+            return data;
+        }
+
+        const query = searchQuery.toLowerCase();
+
+        // Filter KPI metrics
+        const filteredKpiMetrics = kpi_metrics.filter((kpi: IKpiMetric) => 
+            kpi.label.toLowerCase().includes(query) ||
+            kpi.value.toString().includes(query)
+        );
+
+        // Filter recommendations
+        const filteredRecommendations = recommendations?.filter((rec: any) => 
+            rec.title?.toLowerCase().includes(query) ||
+            rec.description?.toLowerCase().includes(query)
+        ) || [];
+
+        // Filter branch agent rankings
+        const filteredBranchAgentRankings = branch_agent_rankings?.filter((agent: any) => 
+            agent.name?.toLowerCase().includes(query) ||
+            agent.branch_name?.toLowerCase().includes(query)
+        ) || [];
+
+        // Filter country rankings
+        const filteredCountryRankings = country_rankings?.filter((country: any) => 
+            country.country?.toLowerCase().includes(query)
+        ) || [];
+
+        // Filter top performing agents
+        const filteredTopAgents = top_performing_agents?.filter((agent: any) => 
+            agent.name?.toLowerCase().includes(query) ||
+            agent.branch?.toLowerCase().includes(query)
+        ) || [];
+
+        // Filter agent performance data
+        const filteredAgentPerformance = agent_performance_released?.filter((agent: any) => 
+            agent.name?.toLowerCase().includes(query)
+        ) || [];
+
+        return {
+            ...data,
+            kpi_metrics: filteredKpiMetrics,
+            recommendations: filteredRecommendations,
+            branch_agent_rankings: filteredBranchAgentRankings,
+            country_rankings: filteredCountryRankings,
+            top_performing_agents: filteredTopAgents,
+            agent_performance_released: filteredAgentPerformance,
+        };
+    }, [data, searchQuery]);
+
     const handleFilterChange = (newFilters: FilterState) => {
         setAppliedFilters(newFilters);
+    };
+
+    const handleModuleChange = (module: 'lead' | 'marketing' | 'campaigns' | 'studio') => {
+        setActiveModule(module);
+        const moduleRoutes = {
+            lead: '/',
+            marketing: '/marketing',
+            campaigns: '/campaigns',
+            studio: '/studio',
+        };
+        window.location.href = moduleRoutes[module];
     };
 
     if (isLoading) {
@@ -68,7 +143,7 @@ const Dashboard: React.FC = () => {
         );
     }
 
-    if (error || !data) {
+    if (error || !data || !filteredData) {
         return (
             <div className="flex items-center justify-center min-h-screen p-4">
                 <div className="max-w-md w-full bg-red-50 border border-red-200 rounded-lg p-6 shadow-lg">
@@ -82,7 +157,7 @@ const Dashboard: React.FC = () => {
         );
     }
 
-    const { kpi_metrics, transaction_list, filters: filterOptions, recommendations, rankings, branch_performance, country_ranking, charts, lead_vs_conversion, revenue_vs_target, branch_agent_rankings, country_rankings, agent_performance_released, top_performing_agents } = data;
+    const { filters: filterOptions, rankings, branch_performance, country_ranking, charts, lead_vs_conversion, revenue_vs_target } = data;
 
     return (
         <div className="min-h-screen" style={{ backgroundColor: '#F1F5F8' }}>
@@ -91,25 +166,48 @@ const Dashboard: React.FC = () => {
             <div className="md:hidden bg-white border-b shadow-sm overflow-x-auto mb-4">
                 <div className="flex items-center space-x-1 px-4 min-w-max">
                     <button
-                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-900"
+                        onClick={() => handleModuleChange('lead')}
+                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
+                            activeModule === 'lead' ? 'text-gray-900' : 'text-gray-500'
+                        }`}
                     >
                         Lead Management
-                        <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
+                        {activeModule === 'lead' && (
+                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
+                        )}
                     </button>
                     <button
-                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-500"
+                        onClick={() => handleModuleChange('marketing')}
+                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
+                            activeModule === 'marketing' ? 'text-gray-900' : 'text-gray-500'
+                        }`}
                     >
                         Marketing Automation
+                        {activeModule === 'marketing' && (
+                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
+                        )}
                     </button>
                     <button
-                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-500"
+                        onClick={() => handleModuleChange('campaigns')}
+                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
+                            activeModule === 'campaigns' ? 'text-gray-900' : 'text-gray-500'
+                        }`}
                     >
                         Campaigns
+                        {activeModule === 'campaigns' && (
+                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
+                        )}
                     </button>
                     <button
-                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-500"
+                        onClick={() => handleModuleChange('studio')}
+                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
+                            activeModule === 'studio' ? 'text-gray-900' : 'text-gray-500'
+                        }`}
                     >
                         Studio
+                        {activeModule === 'studio' && (
+                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
+                        )}
                     </button>
                 </div>
             </div>
@@ -127,7 +225,7 @@ const Dashboard: React.FC = () => {
             {/* KPI Cards Grid */}
             <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
                 <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 lg:gap-6">
-                    {kpi_metrics.map((kpi: IKpiMetric) => (
+                    {filteredData.kpi_metrics.map((kpi: IKpiMetric) => (
                         <KpiCard key={kpi.id} kpi={kpi} />
                     ))}
                 </div>
@@ -135,7 +233,7 @@ const Dashboard: React.FC = () => {
 
             {/* Actionable Insights */}
             <ActionableInsights
-                recommendations={recommendations || []}
+                recommendations={filteredData.recommendations || []}
                 rankings={rankings || { branch_ranking: 0, country_ranking: 0 }}
                 branchPerformance={branch_performance || []}
                 countryRanking={country_ranking || []}
@@ -164,8 +262,8 @@ const Dashboard: React.FC = () => {
                 {/* Rankings Table (1/3 width) */}
                 <div className="lg:col-span-1">
                     <RankingsTable
-                        branchAgentData={branch_agent_rankings || []}
-                        countryData={country_rankings || []}
+                        branchAgentData={filteredData.branch_agent_rankings || []}
+                        countryData={filteredData.country_rankings || []}
                     />
                 </div>
             </div>
@@ -175,14 +273,14 @@ const Dashboard: React.FC = () => {
                 {/* Agent Performance Chart (2/3 width) */}
                 <div className="lg:col-span-2">
                     <AgentPerformanceChart
-                        data={agent_performance_released || []}
+                        data={filteredData.agent_performance_released || []}
                     />
                 </div>
 
                 {/* Top Performing Agents (1/3 width) */}
                 <div className="lg:col-span-1">
                     <TopAgentsPanel
-                        agents={top_performing_agents || []}
+                        agents={filteredData.top_performing_agents || []}
                     />
                 </div>
             </div>

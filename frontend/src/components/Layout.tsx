@@ -10,9 +10,11 @@ import { IBanner } from '../types/User';
 // Define the props for Layout (children are React nodes)
 interface LayoutProps {
     children: React.ReactNode;
+    searchQuery?: string;
+    onSearchChange?: (query: string) => void;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, searchQuery = '', onSearchChange }) => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [banner, setBanner] = useState<IBanner | null>(null);
     const [bannerLoading, setBannerLoading] = useState(true);
@@ -45,7 +47,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             
             {/* Navbar - fixed position, full width, above sidebar */}
             <div className="fixed top-0 left-0 right-0 z-50" style={{ marginTop: `${bannerHeight}px` }}>
-                <Navbar toggleSidebar={toggleSidebar} activeModule={activeModule} setActiveModule={setActiveModule} />
+                <Navbar 
+                    toggleSidebar={toggleSidebar} 
+                    activeModule={activeModule} 
+                    setActiveModule={setActiveModule}
+                    searchQuery={searchQuery}
+                    onSearchChange={onSearchChange}
+                />
             </div>
             
             <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} activeModule={activeModule} />
