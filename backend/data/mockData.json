@@ -1,0 +1,615 @@
+{
+  "lookups": {
+    "users": [
+      {
+        "user_id": "U001",
+        "first_name": "Alice",
+        "last_name": "Johnson",
+        "role": "Agent"
+      },
+      {
+        "user_id": "U002",
+        "first_name": "Bob",
+        "last_name": "Smith",
+        "role": "Agent"
+      },
+      {
+        "user_id": "U003",
+        "first_name": "Clara",
+        "last_name": "Davis",
+        "role": "Agent"
+      },
+      {
+        "user_id": "U004",
+        "first_name": "David",
+        "last_name": "Wilson",
+        "role": "Agent"
+      },
+      {
+        "user_id": "U005",
+        "first_name": "Emily",
+        "last_name": "Brown",
+        "role": "Agent"
+      }
+    ],
+    "branches": [
+      {
+        "branch_id": "B001",
+        "name": "Downtown Central",
+        "region": "West"
+      },
+      {
+        "branch_id": "B002",
+        "name": "Metro North",
+        "region": "East"
+      },
+      {
+        "branch_id": "B003",
+        "name": "Suburban South",
+        "region": "West"
+      }
+    ]
+  },
+  "metrics": {
+    "revenue_targets": [
+      {
+        "month": "2025-09",
+        "target_amount": 350000
+      },
+      {
+        "month": "2025-10",
+        "target_amount": 400000
+      },
+      {
+        "month": "2025-11",
+        "target_amount": 450000
+      },
+      {
+        "month": "2025-12",
+        "target_amount": 500000
+      }
+    ]
+  },
+  "transactions": [
+    {
+      "txn_id": "T0001",
+      "user_id": "U001",
+      "branch_id": "B001",
+      "customer_name": "Cust. A. Johnson",
+      "amount": 52300.50,
+      "status": "Closed",
+      "date": "2025-09-01"
+    },
+    {
+      "txn_id": "T0002",
+      "user_id": "U003",
+      "branch_id": "B002",
+      "customer_name": "Cust. B. Williams",
+      "amount": 22100.00,
+      "status": "Closed",
+      "date": "2025-09-03"
+    },
+    {
+      "txn_id": "T0003",
+      "user_id": "U002",
+      "branch_id": "B001",
+      "customer_name": "Cust. C. Miller",
+      "amount": 7890.75,
+      "status": "Pending",
+      "date": "2025-09-05"
+    },
+    {
+      "txn_id": "T0004",
+      "user_id": "U004",
+      "branch_id": "B003",
+      "customer_name": "Cust. D. Garcia",
+      "amount": 15000.00,
+      "status": "Closed",
+      "date": "2025-09-10"
+    },
+    {
+      "txn_id": "T0005",
+      "user_id": "U001",
+      "branch_id": "B002",
+      "customer_name": "Cust. E. Rodriguez",
+      "amount": 4500.00,
+      "status": "Rejected",
+      "date": "2025-09-12"
+    },
+    {
+      "txn_id": "T0006",
+      "user_id": "U005",
+      "branch_id": "B001",
+      "customer_name": "Cust. F. Martinez",
+      "amount": 32900.00,
+      "status": "Processing",
+      "date": "2025-09-15"
+    },
+    {
+      "txn_id": "T0007",
+      "user_id": "U003",
+      "branch_id": "B003",
+      "customer_name": "Cust. G. Hernandez",
+      "amount": 90000.00,
+      "status": "Closed",
+      "date": "2025-09-20"
+    },
+    {
+      "txn_id": "T0008",
+      "user_id": "U002",
+      "branch_id": "B002",
+      "customer_name": "Cust. H. Lopez",
+      "amount": 12500.00,
+      "status": "Pending",
+      "date": "2025-09-22"
+    },
+    {
+      "txn_id": "T0009",
+      "user_id": "U001",
+      "branch_id": "B001",
+      "customer_name": "Cust. I. Gonzalez",
+      "amount": 6700.50,
+      "status": "Closed",
+      "date": "2025-09-25"
+    },
+    {
+      "txn_id": "T0010",
+      "user_id": "U005",
+      "branch_id": "B003",
+      "customer_name": "Cust. J. Perez",
+      "amount": 18900.00,
+      "status": "Processing",
+      "date": "2025-09-28"
+    },
+    {
+      "txn_id": "T0011",
+      "user_id": "U004",
+      "branch_id": "B001",
+      "customer_name": "Cust. K. Torres",
+      "amount": 22000.00,
+      "status": "Closed",
+      "date": "2025-10-01"
+    },
+    {
+      "txn_id": "T0012",
+      "user_id": "U003",
+      "branch_id": "B002",
+      "customer_name": "Cust. L. Flores",
+      "amount": 11500.50,
+      "status": "Pending",
+      "date": "2025-10-03"
+    },
+    {
+      "txn_id": "T0013",
+      "user_id": "U002",
+      "branch_id": "B003",
+      "customer_name": "Cust. M. Rivera",
+      "amount": 84000.00,
+      "status": "Closed",
+      "date": "2025-10-06"
+    },
+    {
+      "txn_id": "T0014",
+      "user_id": "U005",
+      "branch_id": "B001",
+      "customer_name": "Cust. N. Reyes",
+      "amount": 45000.00,
+      "status": "Processing",
+      "date": "2025-10-08"
+    },
+    {
+      "txn_id": "T0015",
+      "user_id": "U001",
+      "branch_id": "B002",
+      "customer_name": "Cust. O. Gomez",
+      "amount": 7120.99,
+      "status": "Rejected",
+      "date": "2025-10-11"
+    },
+    {
+      "txn_id": "T0016",
+      "user_id": "U004",
+      "branch_id": "B003",
+      "customer_name": "Cust. P. Ruiz",
+      "amount": 19000.00,
+      "status": "Closed",
+      "date": "2025-10-15"
+    },
+    {
+      "txn_id": "T0017",
+      "user_id": "U003",
+      "branch_id": "B001",
+      "customer_name": "Cust. Q. Diaz",
+      "amount": 3500.00,
+      "status": "Pending",
+      "date": "2025-10-18"
+    },
+    {
+      "txn_id": "T0018",
+      "user_id": "U002",
+      "branch_id": "B002",
+      "customer_name": "Cust. R. Chavez",
+      "amount": 55000.00,
+      "status": "Closed",
+      "date": "2025-10-21"
+    },
+    {
+      "txn_id": "T0019",
+      "user_id": "U005",
+      "branch_id": "B003",
+      "customer_name": "Cust. S. Morales",
+      "amount": 6200.50,
+      "status": "Processing",
+      "date": "2025-10-24"
+    },
+    {
+      "txn_id": "T0020",
+      "user_id": "U001",
+      "branch_id": "B001",
+      "customer_name": "Cust. T. Ortiz",
+      "amount": 99000.00,
+      "status": "Closed",
+      "date": "2025-10-28"
+    },
+    {
+      "txn_id": "T0021",
+      "user_id": "U003",
+      "branch_id": "B002",
+      "customer_name": "Cust. U. Ramos",
+      "amount": 14000.00,
+      "status": "Closed",
+      "date": "2025-11-01"
+    },
+    {
+      "txn_id": "T0022",
+      "user_id": "U004",
+      "branch_id": "B003",
+      "customer_name": "Cust. V. Alcantara",
+      "amount": 2100.00,
+      "status": "Pending",
+      "date": "2025-11-04"
+    },
+    {
+      "txn_id": "T0023",
+      "user_id": "U002",
+      "branch_id": "B001",
+      "customer_name": "Cust. W. Vasquez",
+      "amount": 33000.00,
+      "status": "Closed",
+      "date": "2025-11-07"
+    },
+    {
+      "txn_id": "T0024",
+      "user_id": "U005",
+      "branch_id": "B002",
+      "customer_name": "Cust. X. Zuniga",
+      "amount": 8900.00,
+      "status": "Rejected",
+      "date": "2025-11-10"
+    },
+    {
+      "txn_id": "T0025",
+      "user_id": "U001",
+      "branch_id": "B003",
+      "customer_name": "Cust. Y. Castro",
+      "amount": 47000.00,
+      "status": "Processing",
+      "date": "2025-11-13"
+    },
+    {
+      "txn_id": "T0026",
+      "user_id": "U004",
+      "branch_id": "B001",
+      "customer_name": "Cust. Z. Peña",
+      "amount": 12000.00,
+      "status": "Closed",
+      "date": "2025-11-16"
+    },
+    {
+      "txn_id": "T0027",
+      "user_id": "U003",
+      "branch_id": "B002",
+      "customer_name": "Cust. 1. Salazar",
+      "amount": 67000.00,
+      "status": "Pending",
+      "date": "2025-11-19"
+    },
+    {
+      "txn_id": "T0028",
+      "user_id": "U002",
+      "branch_id": "B003",
+      "customer_name": "Cust. 2. Medina",
+      "amount": 25000.00,
+      "status": "Closed",
+      "date": "2025-11-22"
+    },
+    {
+      "txn_id": "T0029",
+      "user_id": "U005",
+      "branch_id": "B001",
+      "customer_name": "Cust. 3. Ochoa",
+      "amount": 1900.00,
+      "status": "Processing",
+      "date": "2025-11-25"
+    },
+    {
+      "txn_id": "T0030",
+      "user_id": "U001",
+      "branch_id": "B002",
+      "customer_name": "Cust. 4. Nuñez",
+      "amount": 75000.00,
+      "status": "Closed",
+      "date": "2025-11-28"
+    },
+    {
+      "txn_id": "T0031",
+      "user_id": "U004",
+      "branch_id": "B003",
+      "customer_name": "Cust. 5. Vega",
+      "amount": 4400.00,
+      "status": "Closed",
+      "date": "2025-12-01"
+    },
+    {
+      "txn_id": "T0032",
+      "user_id": "U003",
+      "branch_id": "B001",
+      "customer_name": "Cust. 6. Guzman",
+      "amount": 82000.00,
+      "status": "Pending",
+      "date": "2025-12-03"
+    },
+    {
+      "txn_id": "T0033",
+      "user_id": "U002",
+      "branch_id": "B002",
+      "customer_name": "Cust. 7. Castillo",
+      "amount": 16000.00,
+      "status": "Closed",
+      "date": "2025-12-06"
+    },
+    {
+      "txn_id": "T0034",
+      "user_id": "U005",
+      "branch_id": "B003",
+      "customer_name": "Cust. 8. Rojas",
+      "amount": 3900.50,
+      "status": "Rejected",
+      "date": "2025-12-09"
+    },
+    {
+      "txn_id": "T0035",
+      "user_id": "U001",
+      "branch_id": "B001",
+      "customer_name": "Cust. 9. Castro",
+      "amount": 55000.00,
+      "status": "Processing",
+      "date": "2025-12-11"
+    },
+    {
+      "txn_id": "T0036",
+      "user_id": "U004",
+      "branch_id": "B002",
+      "customer_name": "Cust. 10. Vidal",
+      "amount": 29000.00,
+      "status": "Closed",
+      "date": "2025-12-14"
+    },
+    {
+      "txn_id": "T0037",
+      "user_id": "U003",
+      "branch_id": "B003",
+      "customer_name": "Cust. 11. Soto",
+      "amount": 9500.00,
+      "status": "Pending",
+      "date": "2025-12-17"
+    },
+    {
+      "txn_id": "T0038",
+      "user_id": "U002",
+      "branch_id": "B001",
+      "customer_name": "Cust. 12. Herrera",
+      "amount": 71000.00,
+      "status": "Closed",
+      "date": "2025-12-20"
+    },
+    {
+      "txn_id": "T0039",
+      "user_id": "U005",
+      "branch_id": "B002",
+      "customer_name": "Cust. 13. Ibarra",
+      "amount": 1100.00,
+      "status": "Processing",
+      "date": "2025-12-23"
+    },
+    {
+      "txn_id": "T0040",
+      "user_id": "U001",
+      "branch_id": "B003",
+      "customer_name": "Cust. 14. Navarro",
+      "amount": 36000.00,
+      "status": "Closed",
+      "date": "2025-12-26"
+    },
+    {
+      "txn_id": "T0041",
+      "user_id": "U002",
+      "branch_id": "B001",
+      "customer_name": "Cust. 15. Marin",
+      "amount": 4200.00,
+      "status": "Closed",
+      "date": "2025-11-02"
+    },
+    {
+      "txn_id": "T0042",
+      "user_id": "U003",
+      "branch_id": "B003",
+      "customer_name": "Cust. 16. Bravo",
+      "amount": 19000.00,
+      "status": "Pending",
+      "date": "2025-11-05"
+    },
+    {
+      "txn_id": "T0043",
+      "user_id": "U004",
+      "branch_id": "B002",
+      "customer_name": "Cust. 17. Castro",
+      "amount": 8100.00,
+      "status": "Closed",
+      "date": "2025-11-08"
+    },
+    {
+      "txn_id": "T0044",
+      "user_id": "U005",
+      "branch_id": "B001",
+      "customer_name": "Cust. 18. Soto",
+      "amount": 63000.00,
+      "status": "Rejected",
+      "date": "2025-11-12"
+    },
+    {
+      "txn_id": "T0045",
+      "user_id": "U001",
+      "branch_id": "B003",
+      "customer_name": "Cust. 19. Reyes",
+      "amount": 10000.00,
+      "status": "Processing",
+      "date": "2025-11-15"
+    },
+    {
+      "txn_id": "T0046",
+      "user_id": "U003",
+      "branch_id": "B001",
+      "customer_name": "Cust. 20. Diaz",
+      "amount": 7900.00,
+      "status": "Closed",
+      "date": "2025-11-18"
+    },
+    {
+      "txn_id": "T0047",
+      "user_id": "U004",
+      "branch_id": "B002",
+      "customer_name": "Cust. 21. Chavez",
+      "amount": 50000.00,
+      "status": "Pending",
+      "date": "2025-11-21"
+    },
+    {
+      "txn_id": "T0048",
+      "user_id": "U005",
+      "branch_id": "B003",
+      "customer_name": "Cust. 22. Morales",
+      "amount": 21000.00,
+      "status": "Closed",
+      "date": "2025-11-24"
+    },
+    {
+      "txn_id": "T0049",
+      "user_id": "U001",
+      "branch_id": "B001",
+      "customer_name": "Cust. 23. Ortiz",
+      "amount": 900.00,
+      "status": "Processing",
+      "date": "2025-11-27"
+    },
+    {
+      "txn_id": "T0050",
+      "user_id": "U002",
+      "branch_id": "B002",
+      "customer_name": "Cust. 24. Zuniga",
+      "amount": 48000.00,
+      "status": "Closed",
+      "date": "2025-11-30"
+    },
+    {
+      "txn_id": "T0051",
+      "user_id": "U003",
+      "branch_id": "B003",
+      "customer_name": "Cust. 25. Vega",
+      "amount": 13000.00,
+      "status": "Closed",
+      "date": "2025-12-02"
+    },
+    {
+      "txn_id": "T0052",
+      "user_id": "U004",
+      "branch_id": "B001",
+      "customer_name": "Cust. 26. Ramos",
+      "amount": 7600.00,
+      "status": "Pending",
+      "date": "2025-12-05"
+    },
+    {
+      "txn_id": "T0053",
+      "user_id": "U005",
+      "branch_id": "B002",
+      "customer_name": "Cust. 27. Perez",
+      "amount": 31000.00,
+      "status": "Closed",
+      "date": "2025-12-08"
+    },
+    {
+      "txn_id": "T0054",
+      "user_id": "U001",
+      "branch_id": "B003",
+      "customer_name": "Cust. 28. Soto",
+      "amount": 9000.00,
+      "status": "Rejected",
+      "date": "2025-12-10"
+    },
+    {
+      "txn_id": "T0055",
+      "user_id": "U003",
+      "branch_id": "B001",
+      "customer_name": "Cust. 29. Torres",
+      "amount": 42000.00,
+      "status": "Processing",
+      "date": "2025-12-12"
+    },
+    {
+      "txn_id": "T0056",
+      "user_id": "U004",
+      "branch_id": "B002",
+      "customer_name": "Cust. 30. Lopez",
+      "amount": 15000.00,
+      "status": "Closed",
+      "date": "2025-12-15"
+    },
+    {
+      "txn_id": "T0057",
+      "user_id": "U005",
+      "branch_id": "B003",
+      "customer_name": "Cust. 31. Garcia",
+      "amount": 69000.00,
+      "status": "Pending",
+      "date": "2025-12-18"
+    },
+    {
+      "txn_id": "T0058",
+      "user_id": "U001",
+      "branch_id": "B001",
+      "customer_name": "Cust. 32. Smith",
+      "amount": 2500.00,
+      "status": "Closed",
+      "date": "2025-12-21"
+    },
+    {
+      "txn_id": "T0059",
+      "user_id": "U002",
+      "branch_id": "B002",
+      "customer_name": "Cust. 33. Johnson",
+      "amount": 8800.00,
+      "status": "Processing",
+      "date": "2025-12-24"
+    },
+    {
+      "txn_id": "T0060",
+      "user_id": "U003",
+      "branch_id": "B003",
+      "customer_name": "Cust. 34. Miller",
+      "amount": 34000.00,
+      "status": "Closed",
+      "date": "2025-12-28"
+    }
+  ]
+}

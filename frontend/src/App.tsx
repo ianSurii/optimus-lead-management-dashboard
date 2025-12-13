@@ -1,0 +1,62 @@
+// import React from 'react';
+// import logo from './logo.svg';
+// import './App.css';
+
+// function App() {
+//   return (
+//     <div className="App">
+//       <header className="App-header">
+//         <img src={logo} className="App-logo" alt="logo" />
+//         <p>
+//           Edit <code>src/App.tsx</code> and save to reload.
+//         </p>
+//         <a
+//           className="App-link"
+//           href="https://reactjs.org"
+//           target="_blank"
+//           rel="noopener noreferrer"
+//         >
+//           Learn React
+//         </a>
+//       </header>
+//     </div>
+//   );
+// }
+
+// export default App;
+// src/App.tsx
+
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
+import Dashboard from './pages/Dashboard';
+import NotFound from './pages/NotFound';
+
+
+// Placeholder pages (tsx is optional here, but good practice)
+const TransactionsPage: React.FC = () => <div className="text-xl p-6">Transactions List View</div>;
+const AgentsPage: React.FC = () => <div className="text-xl p-6">Agent Performance View</div>;
+const SettingsPage: React.FC = () => <div className="text-xl p-6">Application Settings</div>;
+
+const App: React.FC = () => {
+    return (
+        <Router>
+            <Layout>
+                <Routes>
+                    {/* Main Dashboard Route */}
+                    <Route path="/" element={<Dashboard />} />
+                    
+                    {/* Menu Routes */}
+                    {/* <Route path="/transactions" element={<TransactionsPage />} /> */}
+                    <Route path="/agents" element={<AgentsPage />} />
+                    <Route path="/settings" element={<SettingsPage />} />
+
+                    {/* 404 Catch-all Route */}
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </Layout>
+        </Router>
+    );
+}
+
+export default App;
