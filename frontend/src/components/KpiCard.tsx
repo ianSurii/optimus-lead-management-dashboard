@@ -12,12 +12,33 @@ const KpiCard: React.FC<KpiCardProps> = ({ kpi }) => {
     const isPositiveChange = isUp;
     const changeColor = isPositiveChange ? '#18E8B8' : '#F90813';
     
+    const [displayValue, setDisplayValue] = React.useState(0);
+
+    React.useEffect(() => {
+        let start = 0;
+        const end = Number(kpi.value);
+        const duration = 1000;
+        const increment = end / (duration / 16);
+        
+        const timer = setInterval(() => {
+            start += increment;
+            if (start >= end) {
+                setDisplayValue(end);
+                clearInterval(timer);
+            } else {
+                setDisplayValue(Math.floor(start));
+            }
+        }, 16);
+        
+        return () => clearInterval(timer);
+    }, [kpi.value]);
+    
     // Get the appropriate unit display
     const getValueDisplay = () => {
-        if (kpi.unit === 'USD') return `$${Number(kpi.value).toLocaleString()}`;
-        if (kpi.unit === '%') return `${kpi.value}%`;
-        if (kpi.unit === 'days') return `${kpi.value} days`;
-        return `${kpi.value}`;
+        if (kpi.unit === 'USD') return `$${Number(displayValue).toLocaleString()}`;
+        if (kpi.unit === '%') return `${displayValue}%`;
+        if (kpi.unit === 'days') return `${displayValue} days`;
+        return `${displayValue}`;
     };
 
     const getPreviousValueDisplay = () => {
@@ -29,15 +50,59 @@ const KpiCard: React.FC<KpiCardProps> = ({ kpi }) => {
     };
     
     return (
-        <div className="flex items-center gap-3 p-4 flex-1 min-w-[250px]">
+        <div 
+            className="flex items-center gap-3 p-4 flex-1 min-w-[250px] hover:scale-105 hover:shadow-lg transition-all duration-300 ease-out"
+            style={{
+                animation: 'slideInFromBottom 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both'
+            }}
+        >
+            <style>{`
+                @keyframes slideInFromBottom {
+                    from {
+                        opacity: 0;
+                        transform: translateY(30px) scale(0.9);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0) scale(1);
+                    }
+                }
+            `}</style>
             {/* Circle with dot */}
             <div 
                 className="relative flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-full flex-shrink-0"
-                style={{ backgroundColor: `${kpi.color}30` }}
+                style={{ 
+                    backgroundColor: `${kpi.color}30`,
+                    animation: 'pulseGlow 2.5s ease-in-out infinite',
+                    boxShadow: `0 0 0 0 ${kpi.color}40`
+                }}
             >
+                <style>{`
+                    @keyframes pulseGlow {
+                        0%, 100% {
+                            transform: scale(1);
+                            box-shadow: 0 0 0 0 ${kpi.color}40;
+                        }
+                        50% {
+                            transform: scale(1.08);
+                            box-shadow: 0 0 0 8px ${kpi.color}00;
+                        }
+                    }
+                    @keyframes dotPulse {
+                        0%, 100% {
+                            transform: scale(1);
+                        }
+                        50% {
+                            transform: scale(1.3);
+                        }
+                    }
+                `}</style>
                 <div 
                     className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: kpi.color }}
+                    style={{ 
+                        backgroundColor: kpi.color,
+                        animation: 'dotPulse 2.5s ease-in-out infinite'
+                    }}
                 />
             </div>
             
@@ -51,7 +116,23 @@ const KpiCard: React.FC<KpiCardProps> = ({ kpi }) => {
                     >
                         {getValueDisplay()}
                     </span>
-                    <span className="text-sm" style={{ color: changeColor }}>
+                    <span 
+                        className="text-sm inline-block"
+                        style={{ 
+                            color: changeColor,
+                            animation: isUp ? 'bounceUp 1s ease-in-out infinite' : 'bounceDown 1s ease-in-out infinite'
+                        }}
+                    >
+                        <style>{`
+                            @keyframes bounceUp {
+                                0%, 100% { transform: translateY(0); }
+                                50% { transform: translateY(-3px); }
+                            }
+                            @keyframes bounceDown {
+                                0%, 100% { transform: translateY(0); }
+                                50% { transform: translateY(3px); }
+                            }
+                        `}</style>
                         {isUp ? '▲' : '▼'}
                     </span>
                 </div>

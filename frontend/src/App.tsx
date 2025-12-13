@@ -36,6 +36,10 @@ import NotFound from './pages/NotFound';
 // Placeholder pages
 const AgentsPage: React.FC = () => <div className="text-xl p-6">Agent Performance View</div>;
 const SettingsPage: React.FC = () => <div className="text-xl p-6">Application Settings</div>;
+const MarketingPage: React.FC = () => <div className="text-xl p-6">Marketing Page</div>;
+const CampaignsPage: React.FC = () => <div className="text-xl p-6">Campaigns Page</div>;
+const StudiosPage: React.FC = () => <div className="text-xl p-6">Studio Page</div>;
+
 
 const App: React.FC = () => {
     return (
@@ -49,6 +53,10 @@ const App: React.FC = () => {
                     <Route path="/transactions" element={<NotFound />} />
                     <Route path="/agents" element={<AgentsPage />} />
                     <Route path="/settings" element={<SettingsPage />} />
+                    <Route path="/marketing" element={<MarketingPage />} />
+                    <Route path="/campaigns" element={<CampaignsPage />} />
+                    <Route path="/studio" element={<StudiosPage />} />
+
 
                     {/* 404 Catch-all Route */}
                     <Route path="*" element={<NotFound />} />

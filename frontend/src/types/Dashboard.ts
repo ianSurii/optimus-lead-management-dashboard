@@ -181,11 +181,67 @@ export interface IRankings {
     country_ranking: number;
 }
 
+/** Revenue vs Target branch data */
+export interface IBranchRevenueTarget {
+    branch_name: string;
+    daily_target: number[];
+    daily_revenue: number[];
+}
+
+/** Revenue vs Target data structure */
+export interface IRevenueVsTarget {
+    labels: string[];
+    branches: {
+        [branchId: string]: IBranchRevenueTarget;
+    };
+}
+
+/** Branch/Agent ranking item */
+export interface IBranchAgentRanking {
+    id: string;
+    name: string;
+    target_kes: number;
+    current: number;
+    previous: number;
+    realised: number;
+    realised_previous: number;
+}
+
+/** Country ranking item */
+export interface ICountryRankingItem {
+    id: string;
+    country: string;
+    realised: number;
+    previous_realised: number;
+    branch_count: number;
+}
+
+/** Agent performance by released amount */
+export interface IAgentPerformanceReleased {
+    agent_id: string;
+    agent_name: string;
+    released_amount: number;
+}
+
+/** Top performing agent */
+export interface ITopPerformingAgent {
+    agent_id: string;
+    agent_name: string;
+    turnaround_time: number;
+    conversion_rate: number;
+    branch_name: string;
+}
+
 /** The overall shape of the data returned by the /dashboard API endpoint. */
 export interface IDashboardData {
     filters: IFilterOptions;
     kpi_metrics: IKpiMetric[];
     lead_vs_conversion: ILeadVsConversion;
+    revenue_vs_target: IRevenueVsTarget;
+    branch_agent_rankings: IBranchAgentRanking[];
+    country_rankings: ICountryRankingItem[];
+    agent_performance_released: IAgentPerformanceReleased[];
+    top_performing_agents: ITopPerformingAgent[];
     transaction_list: ITransaction[];
     charts: ICharts;
     agent_performance: IAgentPerformance[];

@@ -7,6 +7,11 @@ import FilterBar, { FilterState } from '../components/FilterBar';
 import KpiCard from '../components/KpiCard';
 import ActionableInsights from '../components/ActionableInsights';
 import ChartsSection from '../components/ChartsSection';
+import RevenueTargetChart from '../components/RevenueTargetChart';
+import RankingsTable from '../components/RankingsTable';
+import AgentPerformanceChart from '../components/AgentPerformanceChart';
+import TopAgentsPanel from '../components/TopAgentsPanel';
+import Footer from '../components/Footer';
 import { fetchUserProfile } from '../api/sessionApi';
 import { IUserProfile } from '../types/User';
 
@@ -77,10 +82,37 @@ const Dashboard: React.FC = () => {
         );
     }
 
-    const { kpi_metrics, transaction_list, filters: filterOptions, recommendations, rankings, branch_performance, country_ranking, charts, lead_vs_conversion } = data;
+    const { kpi_metrics, transaction_list, filters: filterOptions, recommendations, rankings, branch_performance, country_ranking, charts, lead_vs_conversion, revenue_vs_target, branch_agent_rankings, country_rankings, agent_performance_released, top_performing_agents } = data;
 
     return (
-        <div className="min-h-screen pb-8 px-6 pt-6" style={{ backgroundColor: '#F1F5F8' }}>
+        <div className="min-h-screen" style={{ backgroundColor: '#F1F5F8' }}>
+
+            {/* Mobile Module Navigation - Horizontally Scrollable */}
+            <div className="md:hidden bg-white border-b shadow-sm overflow-x-auto mb-4">
+                <div className="flex items-center space-x-1 px-4 min-w-max">
+                    <button
+                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-900"
+                    >
+                        Lead Management
+                        <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
+                    </button>
+                    <button
+                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-500"
+                    >
+                        Marketing Automation
+                    </button>
+                    <button
+                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-500"
+                    >
+                        Campaigns
+                    </button>
+                    <button
+                        className="px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap text-gray-500"
+                    >
+                        Studio
+                    </button>
+                </div>
+            </div>
 
             {/* Filter Bar */}
             <FilterBar
@@ -118,66 +150,46 @@ const Dashboard: React.FC = () => {
                 userBranchId={userProfile?.primary_branch_id}
             />
 
-            {/* Transactions Table */}
-            <div className="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                        Recent Transactions 
-                        <span className="ml-2 text-sm font-normal text-gray-500">
-                            ({transaction_list.length} Records)
-                        </span>
-                    </h3>
+            {/* Revenue vs Target and Rankings Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                {/* Revenue Target Chart (2/3 width) */}
+                <div className="lg:col-span-2">
+                    <RevenueTargetChart
+                        data={revenue_vs_target}
+                        availableBranches={(filterOptions?.available_branches || []).map(b => ({ value: b.branch_id, label: b.name }))}
+                        userBranchId={userProfile?.primary_branch_id}
+                    />
                 </div>
-                
-                <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Customer
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Amount
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Status
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Date
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
-                            {transaction_list.slice(0, 5).map((txn: ITransaction) => {
-                                let statusClasses = 'bg-blue-100 text-blue-800';
-                                if (txn.status === 'Closed') statusClasses = 'bg-green-100 text-green-800';
-                                else if (txn.status === 'Pending') statusClasses = 'bg-yellow-100 text-yellow-800';
-                                else if (txn.status === 'Rejected') statusClasses = 'bg-red-100 text-red-800';
-                                
-                                return (
-                                    <tr key={txn.id || txn.txn_id} className="hover:bg-gray-50 transition-colors">
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                            {txn.customer_name}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 font-semibold">
-                                            ${txn.amount.toFixed(2)}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusClasses}`}>
-                                                {txn.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            {txn.date}
-                                        </td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
+
+                {/* Rankings Table (1/3 width) */}
+                <div className="lg:col-span-1">
+                    <RankingsTable
+                        branchAgentData={branch_agent_rankings || []}
+                        countryData={country_rankings || []}
+                    />
                 </div>
             </div>
-            
+
+            {/* Agent Performance and Top Agents Row */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                {/* Agent Performance Chart (2/3 width) */}
+                <div className="lg:col-span-2">
+                    <AgentPerformanceChart
+                        data={agent_performance_released || []}
+                    />
+                </div>
+
+                {/* Top Performing Agents (1/3 width) */}
+                <div className="lg:col-span-1">
+                    <TopAgentsPanel
+                        agents={top_performing_agents || []}
+                    />
+                </div>
+            </div>
+
+            {/* Footer */}
+            <Footer />
+         
         </div>
     );
 };

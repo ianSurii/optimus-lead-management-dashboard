@@ -13,6 +13,8 @@ interface CustomSelectProps {
     options: SelectOption[];
     placeholder: string;
     displayValue?: string;
+    width?: string;
+    height?: string;
 }
 
 const CustomSelect: React.FC<CustomSelectProps> = ({ 
@@ -20,7 +22,9 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     onChange, 
     options, 
     placeholder,
-    displayValue 
+    displayValue,
+    width = 'w-full',
+    height = 'h-[60px]'
 }) => {
     const getDisplayText = () => {
         if (!value) return placeholder;
@@ -28,11 +32,11 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
     };
 
     return (
-        <div className="relative flex-1">
+        <div className={`relative flex-1 ${width}`}>
             <select
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
-                className="w-full h-[60px] px-4 py-2 border border-gray-300 rounded-3xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white appearance-none text-sm cursor-pointer text-transparent"
+                className={`w-full ${height} px-4 py-2 border border-gray-300 rounded-3xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white appearance-none text-sm cursor-pointer text-transparent`}
                 aria-label={placeholder}
             >
                 <option value="">{placeholder}</option>

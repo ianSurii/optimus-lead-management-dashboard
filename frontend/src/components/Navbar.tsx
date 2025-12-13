@@ -70,7 +70,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
         <header className="bg-white border-b shadow-sm" style={{ height: '64px' }}>
             <div className="flex items-center justify-between h-full">
                 
-                {/* Left side: Logo (Desktop), Hamburger (Mobile) and Module Navigation */}
+                {/* Left side: Logo (Desktop), Hamburger (Mobile) */}
                 <div className="flex items-center h-full">
                     <button 
                         className="text-gray-600 focus:outline-none md:hidden ml-6"
@@ -85,11 +85,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                         <Logo />
                     </div>
 
-                    {/* Module Navigation */}
+                    {/* Module Navigation - Hidden on mobile, shown on desktop */}
                     <div className="hidden md:flex items-center space-x-1 ml-6">
                         <button
                             onClick={() => handleModuleChange('lead')}
-                            className={`px-4 py-5 text-sm font-medium transition-colors relative ${
+                            className={`px-4 py-5 text-sm font-medium transition-colors relative whitespace-nowrap ${
                                 activeModule === 'lead'
                                     ? 'text-gray-900'
                                     : 'text-gray-500 hover:text-gray-700'
@@ -102,7 +102,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                         </button>
                         <button
                             onClick={() => handleModuleChange('marketing')}
-                            className={`px-4 py-5 text-sm font-medium transition-colors relative ${
+                            className={`px-4 py-5 text-sm font-medium transition-colors relative whitespace-nowrap ${
                                 activeModule === 'marketing'
                                     ? 'text-gray-900'
                                     : 'text-gray-500 hover:text-gray-700'
@@ -115,7 +115,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                         </button>
                         <button
                             onClick={() => handleModuleChange('campaigns')}
-                            className={`px-4 py-5 text-sm font-medium transition-colors relative ${
+                            className={`px-4 py-5 text-sm font-medium transition-colors relative whitespace-nowrap ${
                                 activeModule === 'campaigns'
                                     ? 'text-gray-900'
                                     : 'text-gray-500 hover:text-gray-700'
@@ -128,7 +128,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                         </button>
                         <button
                             onClick={() => handleModuleChange('studio')}
-                            className={`px-4 py-5 text-sm font-medium transition-colors relative ${
+                            className={`px-4 py-5 text-sm font-medium transition-colors relative whitespace-nowrap ${
                                 activeModule === 'studio'
                                     ? 'text-gray-900'
                                     : 'text-gray-500 hover:text-gray-700'
@@ -142,9 +142,9 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                     </div>
                 </div>
 
-                {/* Search Bar - centered between nav items and right side */}
-                <div className="flex-1 flex items-center justify-center px-6">
-                    <div className="flex items-center bg-gray-100 rounded-full px-4 py-2 w-full max-w-2xl">
+                {/* Search Bar - Always visible */}
+                <div className="flex-1 flex items-center justify-center px-4 md:px-6">
+                    <div className="flex items-center bg-gray-100 rounded-full px-3 md:px-4 py-2 w-full max-w-2xl">
                         <svg className="w-4 h-4 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                         </svg>
@@ -159,7 +159,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                 </div>
 
                 {/* Right Side: Notifications, Profile */}
-                <div className="flex items-center space-x-4 pr-6">
+                <div className="flex items-center space-x-2 md:space-x-4 pr-3 md:pr-6">
 
                     {/* Notification Bell */}
                     <div className="relative" ref={notificationRef}>
@@ -229,7 +229,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                                 // }}
                             />
                             {userProfile && (
-                                <span className="text-sm text-gray-500">
+                                <span className="hidden md:inline text-sm text-gray-500">
                                     {userProfile.first_name} {userProfile.last_name}
                                 </span>
                             )}

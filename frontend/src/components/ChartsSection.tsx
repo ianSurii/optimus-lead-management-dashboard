@@ -31,7 +31,7 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
     availableBranches,
     userBranchId 
 }) => {
-    const [selectedBranch, setSelectedBranch] = useState<string>('all');
+    const [selectedBranch, setSelectedBranch] = useState<string>(userBranchId || 'all');
     const [selectedFields, setSelectedFields] = useState<string[]>([]);
     const [showLineExportMenu, setShowLineExportMenu] = useState(false);
     const [showDonutExportMenu, setShowDonutExportMenu] = useState(false);
@@ -87,11 +87,11 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
         if (!charts?.status_breakdown) return null;
 
         const statusColors: { [key: string]: string } = {
-            'Open': '#94a3b8',
+            'Open': '#5962FF',
             'Processing': '#38bdf8',
-            'To Callback Later': '#fbbf24',
-            'Closed': '#10b981',
-            'Product/Service Sold': '#059669'
+            'To Callback Later': '#5962FF',
+            'Closed': '#F8622F',
+            'Product/Service Sold': '#FFC609'
         };
 
         const totalValue = charts.status_breakdown.datasets[0].data.reduce((a: number, b: number) => a + b, 0);
@@ -143,29 +143,31 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
                 {/* Line Chart - Revenue vs Conversion Rate (2/3 width) */}
                 <div className="lg:col-span-2">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-base font-semibold" style={{ color: '#5D8FEE' }}>
-                            Lead By {getBranchName()}
-                        </h3>
+                        <div className="flex items-center gap-4">
+                            <h3 className="text-base font-semibold" style={{ color: '#5D8FEE' }}>
+                                Lead By {getBranchName()}
+                            </h3>
+                        </div>
+                        
                         <div className="flex items-center gap-3">
-                            <span className="text-xs text-gray-600">Legend</span>
-                            
-                            <div className="flex items-center gap-2">
-                                <CustomSelect
-                                    options={branchOptions}
-                                    value={selectedBranch}
-                                    onChange={setSelectedBranch}
-                                    placeholder="Branch"
-                                />
-                            </div>
+                            <CustomSelect
+                            width="w-48"
+                        height="h-10"
 
-                            <div className="flex items-center gap-2">
-                                <MultiSelectCheckbox
-                                    options={fieldOptions}
-                                    selectedValues={selectedFields}
-                                    onChange={setSelectedFields}
-                                    placeholder="Filter by"
-                                />
-                            </div>
+                                options={branchOptions}
+                                value={selectedBranch}
+                                onChange={setSelectedBranch}
+                                placeholder="All Branches"
+                            />
+
+                            <CustomSelect
+                                width="w-48"
+                                height="h-10"
+                                options={[{ value: '', label: 'Filter by' }]}
+                                value=""
+                                onChange={() => {}}
+                                placeholder="Filter by"
+                            />
 
                             <div className="relative">
                                 <button
@@ -209,9 +211,14 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
                 {/* Donut Chart - Status Breakdown (1/3 width) */}
                 <div className="lg:col-span-1">
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-base font-semibold" style={{ color: '#5D8FEE' }}>
-                            Lead Status Total {donutChartData && abbreviateNumber(donutChartData.total)}
-                        </h3>
+                        <div className="flex items-center gap-3">
+                            <h3 className="text-base font-semibold" style={{ color: '#5D8FEE' }}>
+                                Lead Status
+                            </h3>
+                            <span className="text-base font-semibold text-black">
+                                Total {donutChartData && abbreviateNumber(donutChartData.total)}
+                            </span>
+                        </div>
                         <div className="relative">
                             <button
                                 onClick={() => setShowDonutExportMenu(!showDonutExportMenu)}

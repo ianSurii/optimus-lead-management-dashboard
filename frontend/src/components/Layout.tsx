@@ -54,7 +54,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 className="flex flex-col flex-1 overflow-y-auto md:ml-64"
                 style={{ paddingTop: '64px' }}
             >
-                <main className="flex-1 p-4 sm:p-6">
+                <main className="flex-1 p-4" style={{backgroundColor:"#F6F6F8"}}>
                     {children}
                 </main>
             </div>

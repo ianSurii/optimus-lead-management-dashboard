@@ -64,16 +64,29 @@ const getTransactionsWithFilters = (filters = {}) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
-    const dateFrom = filters.date_from 
-        ? new Date(filters.date_from) 
-        : new Date(today.getTime() - 31 * 24 * 60 * 60 * 1000);
+    let dateFrom, dateTo;
     
-    const dateTo = filters.date_to 
-        ? new Date(filters.date_to) 
-        : today;
+    // Handle single 'date' filter (31 days ending on selected date)
+    if (filters.date) {
+        const selectedDate = new Date(filters.date);
+        selectedDate.setHours(0, 0, 0, 0);
+        dateTo = selectedDate;
+        dateFrom = new Date(selectedDate.getTime() - 30 * 24 * 60 * 60 * 1000); // 31 days including selected date
+    } 
+    // Handle date range filters
+    else {
+        dateFrom = filters.date_from 
+            ? new Date(filters.date_from) 
+            : new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000);
+        
+        dateTo = filters.date_to 
+            ? new Date(filters.date_to) 
+            : today;
+    }
     
     transactions = transactions.filter(txn => {
         const txnDate = new Date(txn.date);
+        txnDate.setHours(0, 0, 0, 0);
         return txnDate >= dateFrom && txnDate <= dateTo;
     });
     

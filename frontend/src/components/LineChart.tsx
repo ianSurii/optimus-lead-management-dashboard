@@ -39,6 +39,7 @@ interface LineChartProps {
     yAxisLabel?: string;
     y1AxisLabel?: string;
     dualAxis?: boolean;
+    showLegend?: boolean;
 }
 
 const LineChart: React.FC<LineChartProps> = ({ 
@@ -47,7 +48,8 @@ const LineChart: React.FC<LineChartProps> = ({
     height = '350px',
     yAxisLabel = 'Value',
     y1AxisLabel = 'Secondary Value',
-    dualAxis = false
+    dualAxis = false,
+    showLegend = true
 }) => {
     const chartData = {
         labels,
@@ -126,12 +128,14 @@ const LineChart: React.FC<LineChartProps> = ({
         },
         plugins: {
             legend: {
-                display: true,
-                position: 'bottom' as const,
+                display: showLegend,
+                position: 'top' as const,
+                align: 'start' as const,
                 labels: {
                     usePointStyle: true,
                     padding: 15,
                     font: { size: 11 },
+                    boxWidth: 20,
                     generateLabels: function(chart: any) {
                         const datasets = chart.data.datasets;
                         return datasets.slice(0, 3).map((dataset: any, i: number) => ({

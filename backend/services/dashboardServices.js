@@ -44,7 +44,7 @@ const getDateRange = (days) => {
 
 // ============= KEY METRICS CALCULATION =============
 
-const calculateKPIs = (filteredTransactions) => {
+const calculateKPIs = (filteredTransactions, allTransactions, filters = {}) => {
     const totalLeads = filteredTransactions.length;
     
     // Total contacted leads (To Callback Later + Product/Service Sold + Closed)
@@ -62,78 +62,161 @@ const calculateKPIs = (filteredTransactions) => {
     // Conversion rate (closed / total leads)
     const conversionRate = totalLeads > 0 ? (closedLeads / totalLeads) * 100 : 0;
     
- // Calculate average TAT for closed deals only
-const closedDeals = filteredTransactions.filter(
-    txn => txn.closed_date && 
-           txn.date && 
-           (txn.status === 'Product/Service Sold' || txn.status === 'Closed')
-);
+    // Calculate average TAT for closed deals only
+    const closedDeals = filteredTransactions.filter(
+        txn => txn.closed_date && 
+               txn.date && 
+               (txn.status === 'Product/Service Sold' || txn.status === 'Closed')
+    );
 
-let avgTAT = 0;
-if (closedDeals.length > 0) {
-    const totalTAT = closedDeals.reduce((sum, txn) => {
-        const days = calculateDaysBetween(txn.date, txn.closed_date);
-        // Only add valid day counts (not null or NaN)
-        if (days !== null && !isNaN(days) && days >= 0) {
-            return sum + days;
-        }
-        return sum;
-    }, 0);
-    
-    // Count only valid calculations for average
-    const validCount = closedDeals.filter(txn => {
-        const days = calculateDaysBetween(txn.date, txn.closed_date);
-        return days !== null && !isNaN(days) && days >= 0;
-    }).length;
-    
-    avgTAT = validCount > 0 ? (totalTAT / validCount).toFixed(1) : 0;
-}
+    let avgTAT = 0;
+    if (closedDeals.length > 0) {
+        const totalTAT = closedDeals.reduce((sum, txn) => {
+            const days = calculateDaysBetween(txn.date, txn.closed_date);
+            // Only add valid day counts (not null or NaN)
+            if (days !== null && !isNaN(days) && days >= 0) {
+                return sum + days;
+            }
+            return sum;
+        }, 0);
+        
+        // Count only valid calculations for average
+        const validCount = closedDeals.filter(txn => {
+            const days = calculateDaysBetween(txn.date, txn.closed_date);
+            return days !== null && !isNaN(days) && days >= 0;
+        }).length;
+        
+        avgTAT = validCount > 0 ? (totalTAT / validCount) : 0;
+    }
     
     // Total revenue from closed deals
     const totalRevenue = filteredTransactions
         .filter(txn => txn.status === 'Product/Service Sold' || txn.status === 'Closed')
         .reduce((sum, txn) => sum + txn.amount, 0);
 
+    // Calculate 31 days ago metrics for comparison
+    const today = new Date();
+    if (filters.date) {
+        today.setTime(new Date(filters.date).getTime());
+    }
+    today.setHours(0, 0, 0, 0);
+    
+    const thirtyOneDaysAgo = new Date(today.getTime() - 31 * 24 * 60 * 60 * 1000);
+    const sixtyTwoDaysAgo = new Date(today.getTime() - 62 * 24 * 60 * 60 * 1000);
+    
+    const previousPeriodTransactions = allTransactions.filter(txn => {
+        const txnDate = new Date(txn.date);
+        txnDate.setHours(0, 0, 0, 0);
+        return txnDate >= sixtyTwoDaysAgo && txnDate < thirtyOneDaysAgo;
+    });
+    
+    // Apply same filters to previous period
+    let filteredPreviousTransactions = previousPeriodTransactions;
+    if (filters.branch_id) {
+        filteredPreviousTransactions = filteredPreviousTransactions.filter(txn => txn.branch_id === filters.branch_id);
+    }
+    if (filters.user_id) {
+        filteredPreviousTransactions = filteredPreviousTransactions.filter(txn => txn.user_id === filters.user_id);
+    }
+    if (filters.product_id) {
+        filteredPreviousTransactions = filteredPreviousTransactions.filter(txn => txn.product_id === filters.product_id);
+    }
+    if (filters.campaign_id) {
+        filteredPreviousTransactions = filteredPreviousTransactions.filter(txn => txn.campaign_id === filters.campaign_id);
+    }
+    if (filters.segment_id) {
+        filteredPreviousTransactions = filteredPreviousTransactions.filter(txn => txn.segment_id === filters.segment_id);
+    }
+    
+    // Previous period metrics
+    const prevTotalLeads = filteredPreviousTransactions.length;
+    const prevContactedLeads = filteredPreviousTransactions.filter(
+        txn => txn.status === 'To Callback Later' || 
+               txn.status === 'Product/Service Sold' || 
+               txn.status === 'Closed'
+    ).length;
+    const prevClosedLeads = filteredPreviousTransactions.filter(
+        txn => txn.status === 'Product/Service Sold' || txn.status === 'Closed'
+    ).length;
+    const prevConversionRate = prevTotalLeads > 0 ? (prevClosedLeads / prevTotalLeads) * 100 : 0;
+    
+    const prevClosedDeals = filteredPreviousTransactions.filter(
+        txn => txn.closed_date && txn.date && 
+               (txn.status === 'Product/Service Sold' || txn.status === 'Closed')
+    );
+    let prevAvgTAT = 0;
+    if (prevClosedDeals.length > 0) {
+        const totalTAT = prevClosedDeals.reduce((sum, txn) => {
+            const days = calculateDaysBetween(txn.date, txn.closed_date);
+            if (days !== null && !isNaN(days) && days >= 0) {
+                return sum + days;
+            }
+            return sum;
+        }, 0);
+        const validCount = prevClosedDeals.filter(txn => {
+            const days = calculateDaysBetween(txn.date, txn.closed_date);
+            return days !== null && !isNaN(days) && days >= 0;
+        }).length;
+        prevAvgTAT = validCount > 0 ? (totalTAT / validCount) : 0;
+    }
+    
+    const prevTotalRevenue = filteredPreviousTransactions
+        .filter(txn => txn.status === 'Product/Service Sold' || txn.status === 'Closed')
+        .reduce((sum, txn) => sum + txn.amount, 0);
+
+    // Calculate percentage changes
+    const calculateChange = (current, previous) => {
+        if (previous === 0) return current > 0 ? 100 : 0;
+        return ((current - previous) / previous) * 100;
+    };
+
+    const tatChange = calculateChange(avgTAT, prevAvgTAT);
+    const revenueChange = calculateChange(totalRevenue, prevTotalRevenue);
+    const leadsChange = calculateChange(totalLeads, prevTotalLeads);
+    const contactedChange = calculateChange(contactedLeads, prevContactedLeads);
+    const conversionChange = calculateChange(conversionRate, prevConversionRate);
+
     return [
         { 
-            id: "avg_tat", 
+            id: "turn_around_time", 
             label: "Avg Turn Around Time", 
-            value: avgTAT || 0, 
-            unit: "days", 
-            change_percentage: -1.2, 
-            change_direction: "down" 
+            value: avgTAT.toFixed(1), 
+            previous_value: prevAvgTAT.toFixed(1),
+            unit: "(days)", 
+            change_percentage: Math.abs(tatChange).toFixed(1), 
+            change_direction: tatChange < 0 ? "down" : "up",
+            color: "#5862FC"
         },
-        { 
-            id: "total_revenue", 
-            label: "Total Revenue", 
-            value: totalRevenue.toFixed(2), 
-            unit: "USD", 
-            change_percentage: 5.5, 
-            change_direction: "up" 
-        },
+       
         { 
             id: "total_leads", 
             label: "Total Leads", 
             value: totalLeads, 
+            previous_value: prevTotalLeads,
             unit: "count", 
-            change_percentage: 10.1, 
-            change_direction: "up" 
+            change_percentage: Math.abs(leadsChange).toFixed(1), 
+            change_direction: leadsChange >= 0 ? "up" : "down",
+            color: "#26A9D8"
         },
         { 
-            id: "contacted_leads", 
+            id: "total_contacted_leads", 
             label: "Contacted Leads", 
             value: contactedLeads, 
+            previous_value: prevContactedLeads,
             unit: "count", 
-            change_percentage: 8.3, 
-            change_direction: "up" 
+            change_percentage: Math.abs(contactedChange).toFixed(1), 
+            change_direction: contactedChange >= 0 ? "up" : "down",
+            color: "#FBA42A"
         },
         { 
             id: "conversion_rate", 
             label: "Conversion Rate", 
             value: conversionRate.toFixed(1), 
+            previous_value: prevConversionRate.toFixed(1),
             unit: "%", 
-            change_percentage: 2.5, 
-            change_direction: "up" 
+            change_percentage: Math.abs(conversionChange).toFixed(1), 
+            change_direction: conversionChange >= 0 ? "up" : "down",
+            color: "#FA2965"
         },
     ];
 };
@@ -172,28 +255,59 @@ const recommedationsAndRankings = (filteredTransactions) => {
 
 }
 
-// ============= 7-DAY METRICS =============
+// ============= LEADS VS CONVERSION RATE (7-DAY) =============
 
-const calculate7DayMetrics = (allTransactions) => {
+const calculateLeadsVsConversion = (filteredTransactions, lookups) => {
     const { startDate, endDate } = getDateRange(7);
     
-    const last7Days = allTransactions.filter(txn => {
-        const txnDate = new Date(txn.date);
-        return txnDate >= startDate && txnDate <= endDate;
+    // Create daily labels
+    const labels = [];
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+        labels.push(date.toISOString().split('T')[0]);
+    }
+    
+    // Calculate daily metrics per branch
+    const branchData = {};
+    
+    // Initialize branches
+    lookups.branches.forEach(branch => {
+        branchData[branch.branch_id] = {
+            branch_name: branch.name,
+            daily_revenue: new Array(7).fill(0),
+            daily_closed: new Array(7).fill(0),
+            daily_leads: new Array(7).fill(0),
+            daily_conversion: new Array(7).fill(0)
+        };
     });
     
-    const totalLeads = last7Days.length;
-    const closedLeads = last7Days.filter(
-        txn => txn.status === 'Product/Service Sold' || txn.status === 'Closed'
-    ).length;
+    // Aggregate daily data
+    filteredTransactions.forEach(txn => {
+        const txnDate = new Date(txn.date);
+        if (txnDate >= startDate && txnDate <= endDate) {
+            const dayIndex = calculateDaysBetween(startDate, txnDate);
+            
+            if (dayIndex >= 0 && dayIndex < 7 && branchData[txn.branch_id]) {
+                branchData[txn.branch_id].daily_leads[dayIndex] += 1;
+                
+                if (txn.status === 'Product/Service Sold' || txn.status === 'Closed') {
+                    branchData[txn.branch_id].daily_closed[dayIndex] += 1;
+                    branchData[txn.branch_id].daily_revenue[dayIndex] += txn.amount;
+                }
+            }
+        }
+    });
     
-    const conversionRate = totalLeads > 0 ? (closedLeads / totalLeads) * 100 : 0;
+    // Calculate conversion rates
+    Object.values(branchData).forEach(branch => {
+        branch.daily_conversion = branch.daily_leads.map((leads, index) => {
+            return leads > 0 ? ((branch.daily_closed[index] / leads) * 100) : 0;
+        });
+    });
     
     return {
-        period: '7_days',
-        total_leads: totalLeads,
-        closed_leads: closedLeads,
-        conversion_rate: conversionRate.toFixed(1)
+        labels: labels,
+        branches: branchData
     };
 };
 
@@ -562,12 +676,13 @@ const denormalizeTransactions = (filteredTransactions, lookups) => {
 const getDashboardData = (filters = {}) => {
     // Get filtered transactions (defaults to last 31 days)
     const filteredTransactions = dataRepository.getTransactionsWithFilters(filters);
+    const allTransactions = dataRepository.getTransactions();
     const lookups = dataRepository.getLookups();
     const revenueTargets = dataRepository.getRevenueTargets();
     
-    // Calculate metrics
-    const kpiMetrics = calculateKPIs(filteredTransactions);
-    const sevenDayMetrics = calculate7DayMetrics(filteredTransactions);
+    // Calculate metrics (pass all transactions and filters for comparison)
+    const kpiMetrics = calculateKPIs(filteredTransactions, allTransactions, filters);
+    const leadsVsConversion = calculateLeadsVsConversion(filteredTransactions, lookups);
     
     // Agent and branch performance (7-day period)
     const agentPerformance = calculateAgentPerformance(filteredTransactions, lookups, revenueTargets, 7);
@@ -585,6 +700,38 @@ const getDashboardData = (filters = {}) => {
     const actualDateFrom = dates.length > 0 ? new Date(Math.min(...dates)).toISOString().split('T')[0] : null;
     const actualDateTo = dates.length > 0 ? new Date(Math.max(...dates)).toISOString().split('T')[0] : null;
     
+    // Recommendations and rankings
+    const recommendations = [
+        {
+            title: "Improve Your Turn Around Time",
+            description: "increase your turn around time by 2% by calling your clients between 8:30 am - 12:00 pm."
+        },
+        {
+            title: "Increase Conversion Rate",
+            description: "increase your conversion rate 2% by calling your clients between 8:30 am - 12:00 pm."
+        }
+    ];
+    
+    const rankings = {
+        branch_ranking: 93,
+        country_ranking: 493
+    };
+
+    // Calculate revenue vs target for last 7 days
+    const revenueVsTarget = calculateRevenueVsTarget(filteredTransactions, lookups);
+
+    // Calculate branch/agent rankings
+    const branchAgentRankings = calculateBranchAgentRankings(filteredTransactions, lookups, revenueTargets, filters);
+
+    // Calculate country rankings
+    const countryRankings = calculateCountryRankings(filteredTransactions, lookups);
+
+    // Calculate agent performance by released amount
+    const agentPerformanceReleased = calculateAgentPerformanceByReleased(filteredTransactions, lookups);
+
+    // Calculate top performing agents
+    const topPerformingAgents = calculateTopPerformingAgents(filteredTransactions, lookups);
+    
     return {
         filters: {
             applied: filters,
@@ -595,12 +742,19 @@ const getDashboardData = (filters = {}) => {
             available_products: lookups.products,
         },
         kpi_metrics: kpiMetrics,
-        seven_day_metrics: sevenDayMetrics,
+        lead_vs_conversion: leadsVsConversion,
+        revenue_vs_target: revenueVsTarget,
+        branch_agent_rankings: branchAgentRankings,
+        country_rankings: countryRankings,
+        agent_performance_released: agentPerformanceReleased,
+        top_performing_agents: topPerformingAgents,
         transaction_list: transactionList.slice(0, 50),
         charts: chartData,
         agent_performance: agentPerformance,
         branch_performance: branchPerformance,
         country_ranking: countryRanking,
+        recommendations: recommendations,
+        rankings: rankings,
         summary: {
             total_records: filteredTransactions.length,
             date_range: {
@@ -609,6 +763,262 @@ const getDashboardData = (filters = {}) => {
             }
         }
     };
+};
+
+// Calculate revenue vs target for last 7 days
+const calculateRevenueVsTarget = (transactions, lookups) => {
+    const { startDate, endDate } = getDateRange(7);
+    
+    // Get last 7 days
+    const last7Days = [];
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(startDate.getTime() + i * 24 * 60 * 60 * 1000);
+        last7Days.push(date.toISOString().split('T')[0]);
+    }
+
+    // Initialize branch data structure
+    const branchData = {};
+    lookups.branches.forEach(branch => {
+        branchData[branch.branch_id] = {
+            branch_name: branch.name,
+            daily_target: new Array(7).fill(0),
+            daily_revenue: new Array(7).fill(0)
+        };
+    });
+
+    // Calculate daily revenue (closed + sold)
+    transactions.forEach(txn => {
+        if (txn.closed_date) {
+            const closedDate = new Date(txn.closed_date).toISOString().split('T')[0];
+            const dayIndex = last7Days.indexOf(closedDate);
+            
+            if (dayIndex !== -1 && (txn.status === 'Product/Service Sold' || txn.status === 'Closed')) {
+                if (branchData[txn.branch_id]) {
+                    branchData[txn.branch_id].daily_revenue[dayIndex] += txn.amount;
+                }
+            }
+        }
+    });
+
+    // Add target values (using a simple calculation: distribute monthly target across days)
+    // In a real system, you'd fetch daily/weekly targets from the database
+    lookups.branches.forEach(branch => {
+        const monthlyTarget = 500000; // Mock monthly target
+        const dailyTarget = monthlyTarget / 30; // Approximate daily target
+        
+        for (let i = 0; i < 7; i++) {
+            branchData[branch.branch_id].daily_target[i] = dailyTarget;
+        }
+    });
+
+    return {
+        labels: last7Days,
+        branches: branchData
+    };
+};
+
+// Calculate branch/agent rankings with current vs previous comparison
+const calculateBranchAgentRankings = (transactions, lookups, revenueTargets, filters) => {
+    const currentMonth = new Date().toISOString().slice(0, 7);
+    const { startDate, endDate } = getDateRange(31);
+    const previousPeriodStart = new Date(startDate.getTime() - 31 * 24 * 60 * 60 * 1000);
+    const previousPeriodEnd = new Date(startDate.getTime() - 1 * 24 * 60 * 60 * 1000);
+
+    // Calculate by agent
+    const agentStats = {};
+    
+    lookups.users.forEach(user => {
+        agentStats[user.user_id] = {
+            id: user.user_id,
+            name: `${user.first_name} ${user.last_name}`,
+            target_kes: 300000, // Mock target per agent
+            current: 0,
+            previous: 0,
+            realised: 0,
+            realised_previous: 0
+        };
+    });
+
+    transactions.forEach(txn => {
+        const txnDate = new Date(txn.date);
+        const isCurrent = txnDate >= startDate && txnDate <= endDate;
+        const isPrevious = txnDate >= previousPeriodStart && txnDate <= previousPeriodEnd;
+        
+        if (agentStats[txn.user_id]) {
+            if (isCurrent) {
+                agentStats[txn.user_id].current += 1;
+                if (txn.status === 'Product/Service Sold' || txn.status === 'Closed') {
+                    agentStats[txn.user_id].realised += txn.amount;
+                }
+            }
+            
+            if (isPrevious) {
+                agentStats[txn.user_id].previous += 1;
+                if (txn.status === 'Product/Service Sold' || txn.status === 'Closed') {
+                    agentStats[txn.user_id].realised_previous += txn.amount;
+                }
+            }
+        }
+    });
+
+    return Object.values(agentStats)
+        .filter(agent => agent.realised > 0) // Only show agents with sales
+        .sort((a, b) => b.realised - a.realised);
+};
+
+// Calculate country rankings
+const calculateCountryRankings = (transactions, lookups) => {
+    const { startDate, endDate } = getDateRange(31);
+    const previousPeriodStart = new Date(startDate.getTime() - 31 * 24 * 60 * 60 * 1000);
+    const previousPeriodEnd = new Date(startDate.getTime() - 1 * 24 * 60 * 60 * 1000);
+
+    // Group branches by country
+    const countryStats = {};
+    
+    lookups.branches.forEach(branch => {
+        const country = branch.country || 'Kenya'; // Default to Kenya
+        
+        if (!countryStats[country]) {
+            countryStats[country] = {
+                id: country.toLowerCase().replace(/\s+/g, '-'),
+                country: country,
+                realised: 0,
+                previous_realised: 0,
+                branch_count: 0,
+                branch_ids: []
+            };
+        }
+        
+        countryStats[country].branch_count += 1;
+        countryStats[country].branch_ids.push(branch.branch_id);
+    });
+
+    // Calculate realised amounts
+    transactions.forEach(txn => {
+        const branch = lookups.branches.find(b => b.branch_id === txn.branch_id);
+        if (!branch) return;
+        
+        const country = branch.country || 'Kenya';
+        const txnDate = new Date(txn.date);
+        const isCurrent = txnDate >= startDate && txnDate <= endDate;
+        const isPrevious = txnDate >= previousPeriodStart && txnDate <= previousPeriodEnd;
+        
+        if (countryStats[country]) {
+            if (isCurrent && (txn.status === 'Product/Service Sold' || txn.status === 'Closed')) {
+                countryStats[country].realised += txn.amount;
+            }
+            
+            if (isPrevious && (txn.status === 'Product/Service Sold' || txn.status === 'Closed')) {
+                countryStats[country].previous_realised += txn.amount;
+            }
+        }
+    });
+
+    return Object.values(countryStats).sort((a, b) => b.realised - a.realised);
+};
+
+// Calculate agent performance by released amount
+const calculateAgentPerformanceByReleased = (transactions, lookups) => {
+    const { startDate, endDate } = getDateRange(7);
+    
+    const agentStats = {};
+    
+    // Initialize agents
+    lookups.users.forEach(user => {
+        agentStats[user.user_id] = {
+            agent_id: user.user_id,
+            agent_name: `${user.first_name} ${user.last_name}`,
+            released_amount: 0
+        };
+    });
+
+    // Calculate released amounts
+    transactions.forEach(txn => {
+        const txnDate = new Date(txn.date);
+        const isCurrent = txnDate >= startDate && txnDate <= endDate;
+        
+        if (isCurrent && agentStats[txn.user_id]) {
+            if (txn.status === 'Product/Service Sold' || txn.status === 'Closed') {
+                agentStats[txn.user_id].released_amount += txn.amount;
+            }
+        }
+    });
+
+    // Sort by released amount and return top performers
+    return Object.values(agentStats)
+        .filter(agent => agent.released_amount > 0)
+        .sort((a, b) => b.released_amount - a.released_amount)
+        .slice(0, 10); // Top 10 agents
+};
+
+// Calculate top performing agents with detailed metrics
+const calculateTopPerformingAgents = (transactions, lookups) => {
+    const { startDate, endDate } = getDateRange(31);
+    
+    const agentStats = {};
+    
+    // Initialize agents
+    lookups.users.forEach(user => {
+        agentStats[user.user_id] = {
+            agent_id: user.user_id,
+            agent_name: `${user.first_name} ${user.last_name}`,
+            turnaround_time: 0,
+            conversion_rate: 0,
+            branch_name: '',
+            total_leads: 0,
+            closed_leads: 0,
+            total_tat: 0,
+            tat_count: 0
+        };
+    });
+
+    // Calculate metrics
+    transactions.forEach(txn => {
+        const txnDate = new Date(txn.date);
+        const isCurrent = txnDate >= startDate && txnDate <= endDate;
+        
+        if (isCurrent && agentStats[txn.user_id]) {
+            agentStats[txn.user_id].total_leads += 1;
+            
+            if (txn.status === 'Product/Service Sold' || txn.status === 'Closed') {
+                agentStats[txn.user_id].closed_leads += 1;
+                
+                if (txn.closed_date) {
+                    const tat = calculateDaysBetween(txn.date, txn.closed_date) || 0;
+                    agentStats[txn.user_id].total_tat += tat;
+                    agentStats[txn.user_id].tat_count += 1;
+                }
+            }
+            
+            if (!agentStats[txn.user_id].branch_name) {
+                agentStats[txn.user_id].branch_name = getBranchName(txn.branch_id, lookups);
+            }
+        }
+    });
+
+    // Calculate final metrics
+    Object.values(agentStats).forEach(agent => {
+        agent.conversion_rate = agent.total_leads > 0 
+            ? Number(((agent.closed_leads / agent.total_leads) * 100).toFixed(1))
+            : 0;
+        
+        agent.turnaround_time = agent.tat_count > 0 
+            ? Number((agent.total_tat / agent.tat_count).toFixed(1))
+            : 0;
+    });
+
+    // Sort by conversion rate and return top 5
+    return Object.values(agentStats)
+        .filter(agent => agent.total_leads > 0)
+        .sort((a, b) => b.conversion_rate - a.conversion_rate)
+        .slice(0, 5)
+        .map(({ agent_id, agent_name, turnaround_time, conversion_rate, branch_name }) => ({
+            agent_id,
+            agent_name,
+            turnaround_time,
+            conversion_rate,
+            branch_name
+        }));
 };
 
 

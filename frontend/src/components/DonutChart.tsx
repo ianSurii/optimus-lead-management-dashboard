@@ -49,7 +49,22 @@ const DonutChart: React.FC<DonutChartProps> = ({
                     usePointStyle: true,
                     padding: 10,
                     font: { size: 10 },
-                    boxWidth: 12
+                    boxWidth: 12,
+                    generateLabels: function(chart: any) {
+                        const data = chart.data;
+                        if (data.labels.length && data.datasets.length) {
+                            return data.labels.map((label: string, i: number) => {
+                                const value = data.datasets[0].data[i];
+                                return {
+                                    text: `${value} ${label}`,
+                                    fillStyle: data.datasets[0].backgroundColor[i],
+                                    hidden: false,
+                                    index: i
+                                };
+                            });
+                        }
+                        return [];
+                    }
                 }
             },
             tooltip: {
