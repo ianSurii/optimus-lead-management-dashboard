@@ -3,9 +3,11 @@ export interface IKpiMetric {
     id: string;
     label: string;
     value: string | number;
+    previous_value: string | number;
     unit: string;
     change_percentage: number;
     change_direction: 'up' | 'down';
+    color: string;
 }
 
 /** Represents a single transaction record. */
@@ -75,12 +77,21 @@ export interface IFilterOptions {
     available_products: IProduct[];
 }
 
-/** Seven day metrics */
-export interface ISevenDayMetrics {
-    period: string;
-    total_leads: number;
-    closed_leads: number;
-    conversion_rate: string;
+/** Branch daily data for lead vs conversion chart */
+export interface IBranchDailyData {
+    branch_name: string;
+    daily_revenue: number[];
+    daily_leads: number[];
+    daily_closed: number[];
+    daily_conversion: number[];
+}
+
+/** Lead vs Conversion data structure */
+export interface ILeadVsConversion {
+    labels: string[];
+    branches: {
+        [branchId: string]: IBranchDailyData;
+    };
 }
 
 /** Agent performance */
@@ -158,15 +169,29 @@ export interface ISummary {
     };
 }
 
+/** Recommendation */
+export interface IRecommendation {
+    title: string;
+    description: string;
+}
+
+/** Rankings */
+export interface IRankings {
+    branch_ranking: number;
+    country_ranking: number;
+}
+
 /** The overall shape of the data returned by the /dashboard API endpoint. */
 export interface IDashboardData {
     filters: IFilterOptions;
     kpi_metrics: IKpiMetric[];
-    seven_day_metrics: ISevenDayMetrics;
+    lead_vs_conversion: ILeadVsConversion;
     transaction_list: ITransaction[];
     charts: ICharts;
     agent_performance: IAgentPerformance[];
     branch_performance: IBranchPerformance[];
     country_ranking: ICountryRanking[];
+    recommendations: IRecommendation[];
+    rankings: IRankings;
     summary: ISummary;
 }

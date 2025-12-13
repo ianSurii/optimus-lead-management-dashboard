@@ -1,48 +1,19 @@
 // src/pages/Dashboard.tsx
 
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { IKpiMetric, ITransaction } from '../types/Dashboard';
 import FilterBar, { FilterState } from '../components/FilterBar';
-
-interface KpiCardProps {
-    kpi: IKpiMetric;
-}
-
-// const ChartPlaceholder: React.FC<{ title: string; type: string }> = ({ title, type }) => (
-//     <div className="h-full p-6 bg-white rounded-xl shadow-lg border border-gray-200">
-//         <h3 className="mb-4 text-lg font-semibold border-b border-gray-300 pb-2 text-gray-700">
-//             {title} <span className="text-sm text-gray-500">({type})</span>
-//         </h3>
-//         <div className="flex items-center justify-center h-48 text-gray-400 border-dashed border-2 border-gray-300 rounded-lg bg-gray-50">
-//             <span className="text-sm">Chart Integration Area - e.g., Recharts</span>
-//         </div>
-//     </div>
-// );
-
-const KpiCard: React.FC<KpiCardProps> = ({ kpi }) => {
-    const isUp = kpi.change_direction === 'up';
-    const changeColor = isUp ? 'text-green-600' : 'text-red-600';
-    const bgColor = isUp ? 'bg-green-50' : 'bg-red-50';
-    
-    return (
-        <div className="p-4">
-            <p className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-1">{kpi.label}</p>
-            <p className="text-2xl font-bold text-gray-900 mb-2">
-                {kpi.unit === 'USD' ? `$${Number(kpi.value).toLocaleString()}` : kpi.unit === '%' ? `${kpi.value}%` : `${kpi.value}`}
-            </p>
-            <div className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-medium ${changeColor} ${bgColor}`}>
-                <span className="mr-1">{isUp ? '▲' : '▼'}</span>
-                <span>{Math.abs(kpi.change_percentage)}%</span>
-            </div>
-        </div>
-    );
-};
+import KpiCard from '../components/KpiCard';
+import ActionableInsights from '../components/ActionableInsights';
+import ChartsSection from '../components/ChartsSection';
+import { fetchUserProfile } from '../api/sessionApi';
+import { IUserProfile } from '../types/User';
 
 const Dashboard: React.FC = () => {
+    const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
     const [appliedFilters, setAppliedFilters] = useState<FilterState>({
-        dateFrom: '',
-        dateTo: '',
+        date: new Date().toISOString().split('T')[0],
         branchId: '',
         userId: '',
         campaignId: '',
@@ -50,10 +21,21 @@ const Dashboard: React.FC = () => {
         productId: '',
     });
 
+    useEffect(() => {
+        const loadUserProfile = async () => {
+            try {
+                const profile = await fetchUserProfile();
+                setUserProfile(profile);
+            } catch (error) {
+                console.error('Failed to load user profile:', error);
+            }
+        };
+        loadUserProfile();
+    }, []);
+
     const filters = useMemo(() => {
         const apiFilters: { [key: string]: string } = {};
-        if (appliedFilters.dateFrom) apiFilters.date_from = appliedFilters.dateFrom;
-        if (appliedFilters.dateTo) apiFilters.date_to = appliedFilters.dateTo;
+        if (appliedFilters.date) apiFilters.date = appliedFilters.date;
         if (appliedFilters.branchId) apiFilters.branch_id = appliedFilters.branchId;
         if (appliedFilters.userId) apiFilters.user_id = appliedFilters.userId;
         if (appliedFilters.campaignId) apiFilters.campaign_id = appliedFilters.campaignId;
@@ -61,6 +43,8 @@ const Dashboard: React.FC = () => {
         if (appliedFilters.productId) apiFilters.product_id = appliedFilters.productId;
         return apiFilters;
     }, [appliedFilters]);
+
+
 
     const { data, isLoading, error, refreshData } = useDashboardData(filters);
 
@@ -93,7 +77,7 @@ const Dashboard: React.FC = () => {
         );
     }
 
-    const { kpi_metrics, transaction_list, filters: filterOptions } = data;
+    const { kpi_metrics, transaction_list, filters: filterOptions, recommendations, rankings, branch_performance, country_ranking, charts, lead_vs_conversion } = data;
 
     return (
         <div className="min-h-screen pb-8 px-6 pt-6" style={{ backgroundColor: '#F1F5F8' }}>
@@ -109,26 +93,31 @@ const Dashboard: React.FC = () => {
             />
 
             {/* KPI Cards Grid */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+                <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 lg:gap-6">
                     {kpi_metrics.map((kpi: IKpiMetric) => (
                         <KpiCard key={kpi.id} kpi={kpi} />
                     ))}
                 </div>
             </div>
 
-            {/* Charts Section
-            <div className="grid grid-cols-1 gap-6 mb-8 lg:grid-cols-3">
-                <div className="lg:col-span-2">
-                    <ChartPlaceholder title="Monthly Revenue vs. Target" type="Line Chart" />
-                </div>
-                <div className="lg:col-span-1">
-                    <ChartPlaceholder title="Lead Status Breakdown" type="Pie Chart" />
-                </div>
-            </div> */}
+            {/* Actionable Insights */}
+            <ActionableInsights
+                recommendations={recommendations || []}
+                rankings={rankings || { branch_ranking: 0, country_ranking: 0 }}
+                branchPerformance={branch_performance || []}
+                countryRanking={country_ranking || []}
+                userBranchId={userProfile?.primary_branch_id}
+            />
 
-            {/* Transactions Table */}
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+            {/* Charts Section */}
+            <ChartsSection
+                charts={charts}
+                leadVsConversion={lead_vs_conversion}
+                availableBranches={filterOptions?.available_branches || []}
+                userBranchId={userProfile?.primary_branch_id}
+            />
+
             {/* Transactions Table */}
             <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div className="px-6 py-4 border-b border-gray-200">
@@ -138,7 +127,9 @@ const Dashboard: React.FC = () => {
                             ({transaction_list.length} Records)
                         </span>
                     </h3>
-                </divclassName="overflow-x-auto">
+                </div>
+                
+                <div className="overflow-x-auto">
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
