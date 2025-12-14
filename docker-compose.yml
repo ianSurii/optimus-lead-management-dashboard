@@ -1,0 +1,56 @@
+services:
+  backend:
+    container_name: dashboard_api
+    build:
+      context: ./backend
+      dockerfile: Dockerfile   
+      target: builder
+ 
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    develop:
+      watch:
+        - action: sync
+          path: ./backend
+          target: /app
+          ignore:
+            - node_modules/
+        - action: sync+restart
+          path: ./backend/package.json
+          target: /app/package.json
+
+  frontend:
+    container_name: dashboard_app
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      target: builder
+    env_file:
+      - ./.env
+    ports:
+      - "8080:3000"
+    environment:
+      - REACT_APP_API_URL=${FRONTEND_API_URL} 
+      - CHOKIDAR_USEPOLLING=${FRONTEND_CHOKIDAR_POLLING}
+      - SKIP_PREFLIGHT_CHECK=${SKIP_PREFLIGHT_CHECK} 
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run start
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend
+          target: /app
+          # ignore:
+          #   - node_modules/
+        - action: sync+restart
+          path: ./frontend/package.json
+          target: /app/package.json
+
+
