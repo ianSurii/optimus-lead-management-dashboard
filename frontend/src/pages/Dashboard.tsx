@@ -3,15 +3,15 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { IKpiMetric, ITransaction } from '../types/Dashboard';
-import FilterBar, { FilterState } from '../components/FilterBar';
-import KpiCard from '../components/KpiCard';
-import ActionableInsights from '../components/ActionableInsights';
-import ChartsSection from '../components/ChartsSection';
-import RevenueTargetChart from '../components/RevenueTargetChart';
-import RankingsTable from '../components/RankingsTable';
-import AgentPerformanceChart from '../components/AgentPerformanceChart';
-import TopAgentsPanel from '../components/TopAgentsPanel';
-import Footer from '../components/Footer';
+import FilterBar, { FilterState } from '../components/common/FilterBar';
+import KpiCard from '../components/metrics/KpiCard';
+import ActionableInsights from '../components/metrics/ActionableInsights';
+import ChartsSection from '../components/charts/ChartsSection';
+import RevenueTargetChart from '../components/metrics/RevenueTargetChart';
+import RankingsTable from '../components/metrics/RankingsTable';
+import AgentPerformanceChart from '../components/charts/AgentPerformanceChart';
+import TopAgentsPanel from '../components/metrics/TopAgentsPanel';
+import Footer from '../components/layout/Footer';
 import { fetchUserProfile } from '../api/sessionApi';
 import { IUserProfile } from '../types/User';
 
@@ -134,10 +134,103 @@ const Dashboard: React.FC<DashboardProps> = ({ searchQuery = '' }) => {
 
     if (isLoading) {
         return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="text-center">
-                    <div className="inline-block w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <p className="text-xl font-semibold text-gray-700">Loading Dashboard Data...</p>
+            <div className="min-h-screen" style={{ backgroundColor: '#F1F5F8' }}>
+                {/* Mobile Module Navigation Skeleton */}
+                <div className="md:hidden bg-white border-b shadow-sm mb-4">
+                    <div className="flex items-center space-x-4 px-4 py-3">
+                        {[1, 2, 3, 4].map((i) => (
+                            <div key={i} className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Filter Bar Skeleton */}
+                <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
+                            <div key={i} className="space-y-2">
+                                <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="h-10 bg-gray-200 rounded animate-pulse"></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* KPI Cards Skeleton */}
+                <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+                    <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 lg:gap-6">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                            <div key={i} className="flex-1 min-w-[180px] bg-white border border-gray-200 rounded-lg p-4">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+                                    <div className="h-10 w-10 bg-gray-200 rounded-full animate-pulse"></div>
+                                </div>
+                                <div className="h-8 w-20 bg-gray-200 rounded animate-pulse mb-2"></div>
+                                <div className="h-3 w-16 bg-gray-200 rounded animate-pulse"></div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Actionable Insights Skeleton */}
+                <div className="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[1, 2, 3].map((i) => (
+                            <div key={i} className="space-y-4">
+                                <div className="h-6 w-32 bg-gray-200 rounded animate-pulse"></div>
+                                <div className="space-y-2">
+                                    <div className="h-4 w-full bg-gray-200 rounded animate-pulse"></div>
+                                    <div className="h-4 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+                                    <div className="h-4 w-5/6 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Charts Skeleton */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    {[1, 2].map((i) => (
+                        <div key={i} className="bg-white rounded-lg shadow-sm p-6">
+                            <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                            <div className="h-64 bg-gray-200 rounded animate-pulse"></div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* Revenue Target and Rankings Skeleton */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
+                        <div className="h-6 w-48 bg-gray-200 rounded animate-pulse mb-4"></div>
+                        <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="lg:col-span-1 bg-white rounded-lg shadow-sm p-6">
+                        <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
+                        <div className="space-y-3">
+                            {[1, 2, 3, 4, 5].map((i) => (
+                                <div key={i} className="h-12 bg-gray-200 rounded animate-pulse"></div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Agent Performance Skeleton */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
+                        <div className="h-6 w-40 bg-gray-200 rounded animate-pulse mb-4"></div>
+                        <div className="h-80 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                    <div className="lg:col-span-1 bg-white rounded-lg shadow-sm p-6">
+                        <div className="h-6 w-36 bg-gray-200 rounded animate-pulse mb-4"></div>
+                        <div className="space-y-3">
+                            {[1, 2, 3, 4, 5].map((i) => (
+                                <div key={i} className="space-y-2">
+                                    <div className="h-4 w-32 bg-gray-200 rounded animate-pulse"></div>
+                                    <div className="h-3 w-24 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
         );
@@ -245,6 +338,10 @@ const Dashboard: React.FC<DashboardProps> = ({ searchQuery = '' }) => {
                 charts={charts}
                 leadVsConversion={lead_vs_conversion}
                 availableBranches={filterOptions?.available_branches || []}
+                availableCampaigns={filterOptions?.available_campaigns || []}
+                availableProducts={filterOptions?.available_products || []}
+                availableSegments={filterOptions?.available_segments || []}
+                availableUsers={filterOptions?.available_users || []}
                 userBranchId={userProfile?.primary_branch_id}
             />
 

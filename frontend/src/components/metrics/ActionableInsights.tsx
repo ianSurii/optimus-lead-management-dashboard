@@ -1,8 +1,8 @@
 // src/components/ActionableInsights.tsx
 
 import React from 'react';
-import { IBranchPerformance, ICountryRanking } from '../types/Dashboard';
-import type{ Recommendation ,ActionableInsightsProps,Rankings} from '../types/Recommedation';
+import { IBranchPerformance, ICountryRanking } from '../../types/Dashboard';
+import type{ Recommendation ,ActionableInsightsProps,Rankings} from '../../types/Recommedation';
 
 
 

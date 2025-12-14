@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
-import BannerMessage from './BannerMessage';
-import { fetchBanner } from '../api/sessionApi';
-import { IBanner } from '../types/User';
+import BannerMessage from '../common/BannerMessage';
+import { fetchBanner } from '../../api/sessionApi';
+import { IBanner } from '../../types/User';
 
 // Define the props for Layout (children are React nodes)
 interface LayoutProps {

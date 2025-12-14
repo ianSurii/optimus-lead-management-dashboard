@@ -186,19 +186,8 @@ const calculateKPIs = (filteredTransactions, allTransactions, filters = {}) => {
             change_percentage: Math.abs(tatChange).toFixed(1), 
             change_direction: tatChange < 0 ? "down" : "up",
             color: "#5862FC"
-        },
-       
-        { 
-            id: "total_leads", 
-            label: "Total Leads", 
-            value: totalLeads, 
-            previous_value: prevTotalLeads,
-            unit: "count", 
-            change_percentage: Math.abs(leadsChange).toFixed(1), 
-            change_direction: leadsChange >= 0 ? "up" : "down",
-            color: "#26A9D8"
-        },
-        { 
+        },       
+              { 
             id: "total_contacted_leads", 
             label: "Contacted Leads", 
             value: contactedLeads, 
@@ -218,6 +207,17 @@ const calculateKPIs = (filteredTransactions, allTransactions, filters = {}) => {
             change_direction: conversionChange >= 0 ? "up" : "down",
             color: "#FA2965"
         },
+          { 
+            id: "total_leads", 
+            label: "Total Leads", 
+            value: totalLeads, 
+            previous_value: prevTotalLeads,
+            unit: "count", 
+            change_percentage: Math.abs(leadsChange).toFixed(1), 
+            change_direction: leadsChange >= 0 ? "up" : "down",
+            color: "#26A9D8"
+        },
+
     ];
 };
 
@@ -731,6 +731,8 @@ const getDashboardData = (filters = {}) => {
 
     // Calculate top performing agents
     const topPerformingAgents = calculateTopPerformingAgents(filteredTransactions, lookups);
+
+   
     
     return {
         filters: {

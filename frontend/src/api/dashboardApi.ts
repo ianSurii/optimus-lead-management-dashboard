@@ -2,9 +2,9 @@
 
 import { IDashboardData } from '../types/Dashboard';
 
-// const API_URL = process.env.REACT_APP_API_URL;
-const API_URL = "http://localhost:3000";
-const API_VERSION = '/api/v1';
+const API_URL = process.env.REACT_APP_API_URL||"http://localhost:3000";
+// const API_URL = "http://localhost:3000";
+const API_VERSION = process.env.REACT_APP_API_VERSION||'/api/v1';
 
 // Define the type for filters, allowing string, number, or undefined values
 interface Filters {
@@ -22,19 +22,16 @@ export async function fetchDashboardData(filters: Filters = {}): Promise<IDashbo
 
     const url = new URL(`${API_URL}${API_VERSION}/dashboard`);
     
-    // FIX APPLIED HERE:
-    // 1. Assert Object.keys(filters) as a simple array of strings (string[]).
-    // 2. Explicitly type the 'key' argument in the forEach callback as 'string'.
+    
     (Object.keys(filters) as string[]).forEach((key: string) => {
         
-        // This is necessary because filters[key] might be string | number | undefined
         const filterValue = filters[key]; 
 
         if (filterValue !== undefined) {
-            // FIX (Value): Explicitly convert the value to a string
+            
             const stringValue = String(filterValue); 
             
-            // Both arguments (key and stringValue) are now guaranteed to be strings.
+            
             url.searchParams.append(key, stringValue);
         }
     });

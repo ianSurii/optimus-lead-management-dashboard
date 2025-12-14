@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBanner } from '../types/User';
+import { IBanner } from '../../types/User';
 
 // Define the component's props interface
 interface BannerMessageProps {

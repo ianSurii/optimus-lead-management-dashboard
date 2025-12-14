@@ -1,8 +1,8 @@
 // src/components/Navbar.tsx
 
 import React, { useState, useEffect } from 'react';
-import { fetchUserProfile, fetchNotifications } from '../api/sessionApi';
-import { IUserProfile, INotification } from '../types/User';
+import { fetchUserProfile, fetchNotifications } from '../../api/sessionApi';
+import { IUserProfile, INotification } from '../../types/User';
 import Logo from './Logo';
 import SearchBar from './SearchBar';
 import NotificationBell from './NotificationBell';

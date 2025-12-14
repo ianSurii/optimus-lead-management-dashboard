@@ -13,7 +13,7 @@ import {
     Legend,
     Filler
 } from 'chart.js';
-import { abbreviateNumber } from '../utils/numberFormatter';
+import { abbreviateNumber } from '../../utils/numberFormatter';
 
 ChartJS.register(
     CategoryScale,

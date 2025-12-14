@@ -1,7 +1,7 @@
 // src/components/NotificationBell.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import { INotification } from '../types/User';
+import { INotification } from '../../types/User';
 
 interface NotificationBellProps {
     notifications: INotification[];

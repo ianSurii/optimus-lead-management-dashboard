@@ -1,11 +1,11 @@
 // src/components/ChartsSection.tsx
 
-import React, { useState, useMemo } from 'react';
-import CustomSelect from './CustomSelect';
+import React, { useState, useMemo, useEffect } from 'react';
+import CustomSelect from '../common/CustomSelect';
 import LineChart from './LineChart';
 import DonutChart from './DonutChart';
-import MultiSelectCheckbox from './MultiSelectCheckbox';
-import { abbreviateNumber } from '../utils/numberFormatter';
+import MultiSelectCheckbox from '../common/MultiSelectCheckbox';
+import { abbreviateNumber } from '../../utils/numberFormatter';
 
 interface ChartsSectionProps {
     charts: any;
@@ -22,19 +22,44 @@ interface ChartsSectionProps {
         }
     };
     availableBranches: Array<{ branch_id: string; name: string; }>;
+    availableCampaigns?: Array<{ campaign_id: string; name: string; }>;
+    availableProducts?: Array<{ product_id: string; name: string; }>;
+    availableSegments?: Array<{ segment_id: string; name: string; }>;
+    availableUsers?: Array<{ user_id: string; first_name: string; last_name: string; }>;
     userBranchId?: string;
+    onFilterChange?: (filters: { campaigns: string[]; products: string[]; segments: string[]; agents: string[] }) => void;
 }
 
 const ChartsSection: React.FC<ChartsSectionProps> = ({ 
     charts, 
     leadVsConversion,
     availableBranches,
-    userBranchId 
+    availableCampaigns = [],
+    availableProducts = [],
+    availableSegments = [],
+    availableUsers = [],
+    userBranchId,
+    onFilterChange
 }) => {
     const [selectedBranch, setSelectedBranch] = useState<string>(userBranchId || 'all');
-    const [selectedFields, setSelectedFields] = useState<string[]>([]);
+    const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
+    const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+    const [selectedSegments, setSelectedSegments] = useState<string[]>([]);
+    const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
     const [showLineExportMenu, setShowLineExportMenu] = useState(false);
     const [showDonutExportMenu, setShowDonutExportMenu] = useState(false);
+
+    // Notify parent of filter changes
+    useEffect(() => {
+        if (onFilterChange) {
+            onFilterChange({
+                campaigns: selectedCampaigns,
+                products: selectedProducts,
+                segments: selectedSegments,
+                agents: selectedAgents
+            });
+        }
+    }, [selectedCampaigns, selectedProducts, selectedSegments, selectedAgents, onFilterChange]);
 
     // Prepare line chart data - using revenue instead of leads count
     const lineChartData = useMemo(() => {
@@ -123,6 +148,56 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
         ...availableBranches.map(b => ({ value: b.branch_id, label: b.name }))
     ];
 
+    const campaignOptions = availableCampaigns.map(c => ({ value: c.campaign_id, label: c.name }));
+    const productOptions = availableProducts.map(p => ({ value: p.product_id, label: p.name }));
+    const segmentOptions = availableSegments.map(s => ({ value: s.segment_id, label: s.name }));
+    const agentOptions = availableUsers.map(u => ({ value: u.user_id, label: `${u.first_name} ${u.last_name}` }));
+
+    // Build filter dropdown options
+    const filterOptions = [
+        ...(campaignOptions.length > 0 ? [{ value: 'campaign', label: `Campaign (${campaignOptions.length})` }] : []),
+        ...(productOptions.length > 0 ? [{ value: 'product', label: `Product (${productOptions.length})` }] : []),
+        ...(segmentOptions.length > 0 ? [{ value: 'segment', label: `Segment (${segmentOptions.length})` }] : []),
+        ...(agentOptions.length > 0 ? [{ value: 'agent', label: `Agent (${agentOptions.length})` }] : [])
+    ];
+
+    const [activeFilterType, setActiveFilterType] = useState<string>('');
+    const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+
+    const handleFilterTypeSelect = (type: string) => {
+        setActiveFilterType(type);
+        setShowFilterDropdown(false);
+    };
+
+    const getActiveFilterOptions = () => {
+        switch (activeFilterType) {
+            case 'campaign': return campaignOptions;
+            case 'product': return productOptions;
+            case 'segment': return segmentOptions;
+            case 'agent': return agentOptions;
+            default: return [];
+        }
+    };
+
+    const getActiveFilterValues = () => {
+        switch (activeFilterType) {
+            case 'campaign': return selectedCampaigns;
+            case 'product': return selectedProducts;
+            case 'segment': return selectedSegments;
+            case 'agent': return selectedAgents;
+            default: return [];
+        }
+    };
+
+    const handleActiveFilterChange = (values: string[]) => {
+        switch (activeFilterType) {
+            case 'campaign': setSelectedCampaigns(values); break;
+            case 'product': setSelectedProducts(values); break;
+            case 'segment': setSelectedSegments(values); break;
+            case 'agent': setSelectedAgents(values); break;
+        }
+    };
+
     const fieldOptions = [
         { value: 'campaign', label: 'Campaign' },
         { value: 'product', label: 'Product' },
@@ -145,7 +220,7 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex items-center gap-4">
                             <h3 className="text-base font-semibold" style={{ color: '#5D8FEE' }}>
-                                Lead By {getBranchName()}
+                                Leads
                             </h3>
                         </div>
                         
@@ -160,14 +235,40 @@ const ChartsSection: React.FC<ChartsSectionProps> = ({
                                 placeholder="All Branches"
                             />
 
-                            <CustomSelect
-                                width="w-48"
-                                height="h-10"
-                                options={[{ value: '', label: 'Filter by' }]}
-                                value=""
-                                onChange={() => {}}
-                                placeholder="Filter by"
-                            />
+                            {activeFilterType ? (
+                                <MultiSelectCheckbox
+                                    options={getActiveFilterOptions()}
+                                    selectedValues={getActiveFilterValues()}
+                                    onChange={handleActiveFilterChange}
+                                    placeholder={`Select ${activeFilterType}`}
+                                    width="w-48"
+                                    height="h-10"
+                                />
+                            ) : (
+                                <CustomSelect
+                                    width="w-48"
+                                    height="h-10"
+                                    options={[{ value: '', label: 'Filter by' }, ...filterOptions]}
+                                    value=""
+                                    onChange={handleFilterTypeSelect}
+                                    placeholder="Filter by"
+                                />
+                            )}
+
+                            {activeFilterType && (
+                                <button
+                                    onClick={() => {
+                                        setActiveFilterType('');
+                                        setSelectedCampaigns([]);
+                                        setSelectedProducts([]);
+                                        setSelectedSegments([]);
+                                        setSelectedAgents([]);
+                                    }}
+                                    className="text-sm text-gray-500 hover:text-gray-700"
+                                >
+                                    Clear Filter
+                                </button>
+                            )}
 
                             <div className="relative">
                                 <button

@@ -12,13 +12,17 @@ interface MultiSelectCheckboxProps {
     selectedValues: string[];
     onChange: (values: string[]) => void;
     placeholder?: string;
+    width?: string;
+    height?: string;
 }
 
 const MultiSelectCheckbox: React.FC<MultiSelectCheckboxProps> = ({
     options,
     selectedValues,
     onChange,
-    placeholder = 'Select options'
+    placeholder = 'Select options',
+    width = 'w-full',
+    height = 'h-10'
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -47,11 +51,11 @@ const MultiSelectCheckbox: React.FC<MultiSelectCheckboxProps> = ({
         : placeholder;
 
     return (
-        <div className="relative" ref={dropdownRef}>
+        <div className={`relative ${width}`} ref={dropdownRef}>
             <button
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
-                className="w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-lg shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className={`w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-3xl shadow-sm text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${height}`}
             >
                 <span className="block truncate text-gray-700">{displayText}</span>
                 <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
@@ -62,7 +66,7 @@ const MultiSelectCheckbox: React.FC<MultiSelectCheckboxProps> = ({
             </button>
 
             {isOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-lg shadow-lg max-h-60 overflow-auto">
+                <div className="absolute z-10 mt-1 w-full bg-white border border-gray-300 rounded-3xl shadow-lg max-h-60 overflow-auto">
                     {options.map((option) => (
                         <label
                             key={option.value}

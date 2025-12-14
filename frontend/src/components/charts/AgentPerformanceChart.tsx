@@ -12,8 +12,8 @@ import {
     Legend,
     ChartOptions
 } from 'chart.js';
-import { abbreviateNumber } from '../utils/numberFormatter';
-import { exportToJPEG, exportToExcel, chartToExcelData } from '../utils/downloadUtils';
+import { abbreviateNumber } from '../../utils/numberFormatter';
+import { exportToJPEG, exportToExcel, chartToExcelData } from '../../utils/downloadUtils';
 
 ChartJS.register(
     CategoryScale,

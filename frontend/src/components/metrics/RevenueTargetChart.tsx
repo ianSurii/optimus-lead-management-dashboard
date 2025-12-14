@@ -1,9 +1,9 @@
 // src/components/RevenueTargetChart.tsx
 
 import React, { useState, useMemo } from 'react';
-import LineChart from './LineChart';
-import CustomSelect from './CustomSelect';
-import { abbreviateNumber } from '../utils/numberFormatter';
+import LineChart from '../charts/LineChart';
+import CustomSelect from '../common/CustomSelect';
+import { abbreviateNumber } from '../../utils/numberFormatter';
 
 interface BranchRevenueTarget {
     branch_name: string;

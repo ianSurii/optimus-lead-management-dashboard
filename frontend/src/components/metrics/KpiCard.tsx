@@ -1,7 +1,7 @@
 // src/components/KpiCard.tsx
 
 import React from 'react';
-import { IKpiMetric } from '../types/Dashboard';
+import { IKpiMetric } from '../../types/Dashboard';
 
 interface KpiCardProps {
     kpi: IKpiMetric;

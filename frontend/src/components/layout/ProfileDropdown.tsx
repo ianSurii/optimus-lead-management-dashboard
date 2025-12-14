@@ -1,7 +1,7 @@
 // src/components/ProfileDropdown.tsx
 
 import React, { useState, useEffect, useRef } from 'react';
-import { IUserProfile } from '../types/User';
+import { IUserProfile } from '../../types/User';
 
 interface ProfileDropdownProps {
     userProfile: IUserProfile | null;
@@ -29,7 +29,7 @@ const ProfileDropdown: React.FC<ProfileDropdownProps> = ({ userProfile }) => {
                 onClick={() => setShowProfile(!showProfile)}
             >
                 <img 
-                    src='/profile.jpeg'
+                    src='/profile.png'
                     alt="Profile" 
                     className="w-10 h-10 rounded-full object-cover border-2 border-gray-300"
                     loading="eager"

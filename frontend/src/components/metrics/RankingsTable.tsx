@@ -1,7 +1,7 @@
 // src/components/RankingsTable.tsx
 
 import React, { useState } from 'react';
-import { abbreviateNumber } from '../utils/numberFormatter';
+import { abbreviateNumber } from '../../utils/numberFormatter';
 
 interface RankingItem {
     id: string;

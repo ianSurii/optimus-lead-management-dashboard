@@ -1,8 +1,7 @@
 import {IUserProfile,INotification, IBanner} from '../types/User';
 
-// const API_URL = process.env.REACT_APP_API_URL;
-const API_URL = "http://localhost:3000";
-const API_VERSION = '/api/v1';
+const API_URL = process.env.REACT_APP_API_URL||"http://localhost:3000";
+const API_VERSION = process.env.REACT_APP_API_VERSION||'/api/v1';
 
 // Function returns a Promise that resolves to the IUserProfile interface
 export async function fetchUserProfile(): Promise<IUserProfile> {
