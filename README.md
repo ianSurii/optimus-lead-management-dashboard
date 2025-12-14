@@ -110,8 +110,8 @@ A full-stack lead management dashboard for sales teams, featuring advanced filte
    npm start --port 8080
    ```
 5. **Access the app:**
-   - Frontend: [http://localhost:3000](http://localhost:3000)
-   - Backend API: [http://localhost:8080](http://localhost:8080)
+   - Frontend: [http://localhost:8080](http://localhost:8080)
+   - Backend API: [http://localhost:3000](http://localhost:3000)
 
 ### Docker Compose
 To run both frontend and backend with Docker Compose:
@@ -132,8 +132,8 @@ Incase of cache issues, you can also try:
 docker-compose up --build --no-cache
 ```   
 1. **Access the app:**
-- Frontend: [http://localhost:3000](http://localhost:3000)
-- Backend: [http://localhost:8080](http://localhost:8080)
+- Frontend: [http://localhost:8080](http://localhost:8080)
+- Backend: [http://localhost:3000](http://localhost:3000)
 
 ---
 
