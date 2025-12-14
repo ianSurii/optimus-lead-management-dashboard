@@ -1,5 +1,3 @@
-// src/components/CustomSelect.tsx
-
 import React from 'react';
 
 interface SelectOption {

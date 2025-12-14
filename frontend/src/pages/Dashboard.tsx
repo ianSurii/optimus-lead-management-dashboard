@@ -1,5 +1,3 @@
-// src/pages/Dashboard.tsx
-
 import React, { useMemo, useState, useEffect } from 'react';
 import { useDashboardData } from '../hooks/useDashboardData';
 import { IKpiMetric, ITransaction } from '../types/Dashboard';

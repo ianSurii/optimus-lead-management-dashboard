@@ -1,5 +1,3 @@
-// src/components/TopAgentsPanel.tsx
-
 import React, { useState } from 'react';
 
 interface TopAgent {

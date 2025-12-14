@@ -1,5 +1,3 @@
-// src/components/RankingsTable.tsx
-
 import React, { useState } from 'react';
 import { abbreviateNumber } from '../../utils/numberFormatter';
 

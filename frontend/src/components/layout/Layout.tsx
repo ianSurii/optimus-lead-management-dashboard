@@ -42,10 +42,10 @@ const Layout: React.FC<LayoutProps> = ({ children, searchQuery = '', onSearchCha
 
     return (
         <div className="flex h-screen bg-gray-50" style={{ paddingTop: `${bannerHeight}px` }}>
-            {/* Banner appears at the very top - fixed position, full width */}
+            {/* Banner */}
             {showBanner && <BannerMessage banner={banner} />}
             
-            {/* Navbar - fixed position, full width, above sidebar */}
+            {/* Navbar  */}
             <div className="fixed top-0 left-0 right-0 z-50" style={{ marginTop: `${bannerHeight}px` }}>
                 <Navbar 
                     toggleSidebar={toggleSidebar} 

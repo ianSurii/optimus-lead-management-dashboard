@@ -1,4 +1,3 @@
-// src/components/Logo.tsx
 
 import React from 'react';
 

@@ -12,7 +12,6 @@ interface UseDashboardHook {
     refreshData: () => Promise<void>;
 }
 
-// Assume filters are defined elsewhere, or use a basic object type
 type Filters = { [key: string]: string | undefined }; 
 
 export function useDashboardData(filters: Filters): UseDashboardHook {
@@ -28,7 +27,7 @@ export function useDashboardData(filters: Filters): UseDashboardHook {
             const result = await fetchDashboardData(filters);
             setData(result);
         } catch (err) {
-            // TypeScript assumes error is 'unknown', so check if it's an Error object
+           
             setError(err instanceof Error ? err.message : 'An unknown error occurred.');
             setData(null);
         } finally {

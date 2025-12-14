@@ -1,5 +1,3 @@
-// src/components/DatePicker.tsx
-
 import React, { useRef } from 'react';
 
 interface DatePickerProps {

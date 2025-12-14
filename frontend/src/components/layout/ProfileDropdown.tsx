@@ -1,5 +1,3 @@
-// src/components/ProfileDropdown.tsx
-
 import React, { useState, useEffect, useRef } from 'react';
 import { IUserProfile } from '../../types/User';
 

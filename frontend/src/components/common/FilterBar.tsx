@@ -1,4 +1,3 @@
-// src/components/FilterBar.tsx
 
 import React, { useState } from 'react';
 import { IBranch, IUser, ICampaign, ISegment, IProduct } from '../../types/Dashboard';

@@ -1,5 +1,3 @@
-// src/components/RevenueTargetChart.tsx
-
 import React, { useState, useMemo } from 'react';
 import LineChart from '../charts/LineChart';
 import CustomSelect from '../common/CustomSelect';

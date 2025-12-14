@@ -1,5 +1,3 @@
-// src/components/KpiCard.tsx
-
 import React from 'react';
 import { IKpiMetric } from '../../types/Dashboard';
 

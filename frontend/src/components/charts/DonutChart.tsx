@@ -1,5 +1,3 @@
-// src/components/DonutChart.tsx
-
 import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import {

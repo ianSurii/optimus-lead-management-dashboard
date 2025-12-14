@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 
 import React, { useState, useEffect } from 'react';
 import { fetchUserProfile, fetchNotifications } from '../../api/sessionApi';

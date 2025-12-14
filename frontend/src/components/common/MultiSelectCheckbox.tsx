@@ -1,5 +1,3 @@
-// src/components/MultiSelectCheckbox.tsx
-
 import React, { useState, useRef, useEffect } from 'react';
 
 interface Option {

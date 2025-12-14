@@ -1,5 +1,3 @@
-// src/components/AgentPerformanceChart.tsx
-
 import React, { useState, useMemo } from 'react';
 import { Bar } from 'react-chartjs-2';
 import {

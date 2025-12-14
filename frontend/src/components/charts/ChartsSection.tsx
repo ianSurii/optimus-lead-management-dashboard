@@ -1,4 +1,3 @@
-// src/components/ChartsSection.tsx
 
 import React, { useState, useMemo, useEffect } from 'react';
 import CustomSelect from '../common/CustomSelect';
