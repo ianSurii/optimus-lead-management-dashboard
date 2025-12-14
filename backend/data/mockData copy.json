@@ -5280,4 +5280,460 @@
       "segment_id": "S001"
     }
   ]
+  ,
+    "revenue_targets": [
+    {
+      "user_id": "U001",
+      "month": "2025-01",
+      "target_amount": 75000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-02",
+      "target_amount": 78000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-03",
+      "target_amount": 80000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-04",
+      "target_amount": 83000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-05",
+      "target_amount": 85000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-06",
+      "target_amount": 88000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-07",
+      "target_amount": 90000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-08",
+      "target_amount": 93000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-09",
+      "target_amount": 95000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-10",
+      "target_amount": 98000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-11",
+      "target_amount": 100000.00
+    },
+    {
+      "user_id": "U001",
+      "month": "2025-12",
+      "target_amount": 103000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-01",
+      "target_amount": 60000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-02",
+      "target_amount": 62000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-03",
+      "target_amount": 64000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-04",
+      "target_amount": 66000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-05",
+      "target_amount": 68000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-06",
+      "target_amount": 70000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-07",
+      "target_amount": 72000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-08",
+      "target_amount": 75000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-09",
+      "target_amount": 77000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-10",
+      "target_amount": 79000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-11",
+      "target_amount": 81000.00
+    },
+    {
+      "user_id": "U002",
+      "month": "2025-12",
+      "target_amount": 83000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-01",
+      "target_amount": 70000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-02",
+      "target_amount": 72000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-03",
+      "target_amount": 75000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-04",
+      "target_amount": 77000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-05",
+      "target_amount": 80000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-06",
+      "target_amount": 82000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-07",
+      "target_amount": 83000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-08",
+      "target_amount": 85000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-09",
+      "target_amount": 88000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-10",
+      "target_amount": 90000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-11",
+      "target_amount": 93000.00
+    },
+    {
+      "user_id": "U003",
+      "month": "2025-12",
+      "target_amount": 95000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-01",
+      "target_amount": 80000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-02",
+      "target_amount": 82000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-03",
+      "target_amount": 85000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-04",
+      "target_amount": 87000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-05",
+      "target_amount": 90000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-06",
+      "target_amount": 92000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-07",
+      "target_amount": 95000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-08",
+      "target_amount": 97000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-09",
+      "target_amount": 80000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-10",
+      "target_amount": 82000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-11",
+      "target_amount": 85000.00
+    },
+    {
+      "user_id": "U004",
+      "month": "2025-12",
+      "target_amount": 87000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-01",
+      "target_amount": 55000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-02",
+      "target_amount": 58000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-03",
+      "target_amount": 60000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-04",
+      "target_amount": 63000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-05",
+      "target_amount": 65000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-06",
+      "target_amount": 68000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-07",
+      "target_amount": 70000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-08",
+      "target_amount": 73000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-09",
+      "target_amount": 65000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-10",
+      "target_amount": 67000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-11",
+      "target_amount": 70000.00
+    },
+    {
+      "user_id": "U005",
+      "month": "2025-12",
+      "target_amount": 100000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-01",
+      "target_amount": 70000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-02",
+      "target_amount": 75000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-03",
+      "target_amount": 77000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-04",
+      "target_amount": 80000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-05",
+      "target_amount": 82000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-06",
+      "target_amount": 84000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-07",
+      "target_amount": 87000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-08",
+      "target_amount": 89000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-09",
+      "target_amount": 92000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-10",
+      "target_amount": 94000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-11",
+      "target_amount": 97000.00
+    },
+    {
+      "user_id": "U006",
+      "month": "2025-12",
+      "target_amount": 100000.00
+    }
+  ],
+  "user_profile": {
+    "user_id": "U001",
+    "first_name": "Ian",
+    "last_name": "Muthuri",
+    "role": "Product Manager",
+    "managed_product_id": "P001",
+    "primary_branch_id": "B001",
+    "profile_pic_url": "logo-sm.png"
+  },
+  "notifications": [
+    {
+      "id": 1,
+      "type": "alert",
+      "message": "Target alert: P001 performance in Uganda is down 15% this month.",
+      "timestamp": "2025-10-25T14:30:00Z",
+      "read": false,
+      "link": "/dashboard/performance/B003"
+    },
+    {
+      "id": 2,
+      "type": "info",
+      "message": "New Campaign 'Q3 Website Lead Form' (C001) launched successfully.",
+      "timestamp": "2025-10-26T08:00:00Z",
+      "read": true,
+      "link": "/dashboard/campaigns/C001"
+    },
+    {
+      "id": 3,
+      "type": "alert",
+      "message": "User U003 has 5 overdue 'Open To Callback' leads.",
+      "timestamp": "2025-10-27T10:15:00Z",
+      "read": false,
+      "link": "/dashboard/users/U003"
+    },
+    {
+      "id": 4,
+      "type": "info",
+      "message": "Monthly performance report generated for September.",
+      "timestamp": "2025-10-28T16:00:00Z",
+      "read": true,
+      "link": "/dashboard/reports/2025-09"
+    },
+    {
+      "id": 5,
+      "type": "alert",
+      "message": "Branch B004's conversion rate dropped to 12% this week.",
+      "timestamp": "2025-10-30T11:45:00Z",
+      "read": false,
+      "link": "/dashboard/performance/B004"
+    },
+    {
+      "id": 6,
+      "type": "info",
+      "message": "New product P005 - 'Investment Portfolio' added to catalogue.",
+      "timestamp": "2025-11-01T09:30:00Z",
+      "read": true,
+      "link": "/dashboard/products/P005"
+    },
+    {
+      "id": 7,
+      "type": "alert",
+      "message": "High-value lead (T00100) requires immediate attention.",
+      "timestamp": "2025-11-05T13:00:00Z",
+      "read": false,
+      "link": "/dashboard/transactions/T00100"
+    },
+    {
+      "id": 8,
+      "type": "info",
+      "message": "Campaign C004 'LinkedIn B2B Outreach' budget review is due.",
+      "timestamp": "2025-11-10T15:00:00Z",
+      "read": true,
+      "link": "/dashboard/campaigns/C004"
+    },
+    {
+      "id": 9,
+      "type": "alert",
+      "message": "User U006 missed their target for P003 in October.",
+      "timestamp": "2025-11-15T10:00:00Z",
+      "read": false,
+      "link": "/dashboard/performance/U006"
+    },
+    {
+      "id": 10,
+      "type": "alert",
+      "message": "U004 is consistently below target for P005 this quarter.",
+      "timestamp": "2025-11-20T09:00:00Z",
+      "read": true,
+      "link": "/dashboard/performance/U004"
+    }
+  ]
+
+
 }
