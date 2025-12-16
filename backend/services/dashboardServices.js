@@ -634,15 +634,15 @@ const createChartData = (filteredTransactions, revenueTargets, lookups) => {
                 backgroundColor: ['#94a3b8', '#38bdf8', '#fbbf24', '#10b981', '#059669']
             }]
         },
-        revenue_by_product: {
-            type: 'pie',
-            labels: Object.keys(productRevenue),
-            datasets: [{
-                data: Object.values(productRevenue),
-                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
-            }]
-        },
-        revenue_by_branch_7days: calculate7DayRevenueByBranch(filteredTransactions, lookups, revenueTargets)
+        // revenue_by_product: {
+        //     type: 'pie',
+        //     labels: Object.keys(productRevenue),
+        //     datasets: [{
+        //         data: Object.values(productRevenue),
+        //         backgroundColor: ['#3b82f6', '#10b981', '#f59e0b']
+        //     }]
+        // },
+        // revenue_by_branch_7days: calculate7DayRevenueByBranch(filteredTransactions, lookups, revenueTargets)
     };
 };
 

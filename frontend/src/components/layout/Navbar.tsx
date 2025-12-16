@@ -131,7 +131,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
                 <SearchBar 
                     value={searchQuery} 
                     onChange={(value) => onSearchChange?.(value)} 
-                    placeholder="Search dashboard data..."
+                    placeholder="Search"
                 />
 
                 {/* Right Side: Notifications, Profile */}

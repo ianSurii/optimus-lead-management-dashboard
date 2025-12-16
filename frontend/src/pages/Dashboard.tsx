@@ -12,6 +12,7 @@ import TopAgentsPanel from '../components/metrics/TopAgentsPanel';
 import Footer from '../components/layout/Footer';
 import { fetchUserProfile } from '../api/sessionApi';
 import { IUserProfile } from '../types/User';
+import { MobileNavbar } from '../components/layout/MobileNavbar';
 
 interface DashboardProps {
     searchQuery?: string;
@@ -254,54 +255,7 @@ const Dashboard: React.FC<DashboardProps> = ({ searchQuery = '' }) => {
         <div className="min-h-screen" style={{ backgroundColor: '#F1F5F8' }}>
 
             {/* Mobile Module Navigation - Horizontally Scrollable */}
-            <div className="md:hidden bg-white border-b shadow-sm overflow-x-auto mb-4">
-                <div className="flex items-center space-x-1 px-4 min-w-max">
-                    <button
-                        onClick={() => handleModuleChange('lead')}
-                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
-                            activeModule === 'lead' ? 'text-gray-900' : 'text-gray-500'
-                        }`}
-                    >
-                        Lead Management
-                        {activeModule === 'lead' && (
-                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
-                        )}
-                    </button>
-                    <button
-                        onClick={() => handleModuleChange('marketing')}
-                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
-                            activeModule === 'marketing' ? 'text-gray-900' : 'text-gray-500'
-                        }`}
-                    >
-                        Marketing Automation
-                        {activeModule === 'marketing' && (
-                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
-                        )}
-                    </button>
-                    <button
-                        onClick={() => handleModuleChange('campaigns')}
-                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
-                            activeModule === 'campaigns' ? 'text-gray-900' : 'text-gray-500'
-                        }`}
-                    >
-                        Campaigns
-                        {activeModule === 'campaigns' && (
-                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
-                        )}
-                    </button>
-                    <button
-                        onClick={() => handleModuleChange('studio')}
-                        className={`px-4 py-3 text-sm font-medium transition-colors relative whitespace-nowrap ${
-                            activeModule === 'studio' ? 'text-gray-900' : 'text-gray-500'
-                        }`}
-                    >
-                        Studio
-                        {activeModule === 'studio' && (
-                            <span className="absolute bottom-0 left-0 right-0 h-1" style={{ backgroundColor: '#5058FD' }}></span>
-                        )}
-                    </button>
-                </div>
-            </div>
+            {MobileNavbar(handleModuleChange, activeModule)}
 
             {/* Filter Bar */}
             <FilterBar
@@ -388,3 +342,5 @@ const Dashboard: React.FC<DashboardProps> = ({ searchQuery = '' }) => {
 };
 
 export default Dashboard;
+
+

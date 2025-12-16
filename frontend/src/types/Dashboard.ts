@@ -156,7 +156,7 @@ export interface IChartData {
 /** Charts collection */
 export interface ICharts {
     status_breakdown: IChartData;
-    revenue_by_product: IChartData;
+    // revenue_by_product: IChartData;
     revenue_by_branch_7days: IChartData;
 }
 

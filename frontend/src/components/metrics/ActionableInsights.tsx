@@ -82,7 +82,7 @@ const ActionableInsights: React.FC<ActionableInsightsProps> = ({
                     animation: 'shimmer 3s infinite linear'
                 }}
             />
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:divide-x lg:divide-y lg:divide-white/20 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:divide-x lg:divide-white/20 relative z-10">
                 {/* Column 1 & 2: Recommendations */}
                 {recommendations.slice(0, 2).map((rec, index) => (
                     <div 
