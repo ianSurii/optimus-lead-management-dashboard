@@ -55,9 +55,9 @@ const LineChart: React.FC<LineChartProps> = ({
         datasets: datasets.map(dataset => ({
             ...dataset,
             tension: 0.4,
-            borderWidth: 4,
-            pointRadius: 5,
-            pointHoverRadius: 7,
+            borderWidth: 6,
+            pointRadius: 0,
+            pointHoverRadius: 0,
             fill: false
         }))
     };

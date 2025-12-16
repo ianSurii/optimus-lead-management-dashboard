@@ -35,14 +35,14 @@ const KpiCard: React.FC<KpiCardProps> = ({ kpi }) => {
     const getValueDisplay = () => {
         if (kpi.unit === 'USD') return `$${Number(displayValue).toLocaleString()}`;
         if (kpi.unit === '%') return `${displayValue}%`;
-        if (kpi.unit === 'days') return `${displayValue} days`;
+        if (kpi.unit === '(days)') return `${displayValue} (days)`;
         return `${displayValue}`;
     };
 
     const getPreviousValueDisplay = () => {
         if (kpi.unit === 'USD') return `$${Number(kpi.previous_value).toLocaleString()}`;
         if (kpi.unit === '%') return `${kpi.previous_value}%`;
-        if (kpi.unit === 'days') return `${kpi.previous_value} days`;
+        if (kpi.unit === '(days)') return `${kpi.previous_value} (days)`;
         if (kpi.unit === 'count') return `${kpi.previous_value}`;
         return `${kpi.previous_value}`;
     };

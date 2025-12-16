@@ -5734,6 +5734,11 @@
       "link": "/dashboard/performance/U004"
     }
   ]
-
+, "banner": {
+    "active": true,
+    "text": "We are donating <span style='color: #E91E63; font-weight: bold;'>50% of June's Sales</span> across premises to the <a href='#' style='color: #E91E63;'>Napa Justice Initiative</a>, a nonprofit challenging racial and economic injustice.",
+    "style": "promotional",
+    "link_url": "/about/csr"
+  }
 
 }

@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchUserProfile, fetchNotifications } from '../../api/sessionApi';
 import { IUserProfile, INotification } from '../../types/User';
 import Logo from './Logo';
@@ -13,11 +14,13 @@ interface NavbarProps {
     setActiveModule: (module: 'lead' | 'marketing' | 'campaigns' | 'studio') => void;
     searchQuery?: string;
     onSearchChange?: (query: string) => void;
+    
 }
 
 const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveModule, searchQuery = '', onSearchChange }) => {
     const [userProfile, setUserProfile] = useState<IUserProfile | null>(null);
     const [notifications, setNotifications] = useState<INotification[]>([]);
+    const navigate = useNavigate();
 
     // Module navigation routes
     const moduleRoutes = {
@@ -29,7 +32,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, activeModule, setActiveM
 
     const handleModuleChange = (module: 'lead' | 'marketing' | 'campaigns' | 'studio') => {
         setActiveModule(module);
-        window.location.href = moduleRoutes[module];
+        navigate(moduleRoutes[module]); 
     };
 
     useEffect(() => {

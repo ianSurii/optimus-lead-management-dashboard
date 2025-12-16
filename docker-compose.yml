@@ -28,7 +28,7 @@ services:
     container_name: dashboard_app
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockeerfile
       target: builder
     env_file:
       - ./.env
